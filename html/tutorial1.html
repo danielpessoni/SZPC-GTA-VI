@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="../src/assets/geral/favicon-black.svg" type="image/x-icon">
+
+    <link rel="stylesheet" href="../src/css/responsivo-tutorial1.css">
+    <link rel="stylesheet" href="../src/css/geral/reset.css">
+    <link rel="stylesheet" href="../src/css/geral/variaveis.css">
+    <link rel="stylesheet" href="../src/css/base-tutorial1.css">
+    <title>GTA VI — HTML e tela, lado a lado</title>
+</head>
+
+<body>
+
+    <main id="secoes">
+        <!-- 01 — MENU DO TOPO -->
+        <section class="secao">
+            <h2 class="titulo"><span>01</span> Menu do topo</h2>
+            <div class="dupla">
+                <pre class="codigo"><span class="com">&lt;!-- MENU DO TOPO --&gt;</span>
+<span class="tag">&lt;</span><span class="nome">nav</span> <span class="atr">class</span>=<span class="val">"menu"</span> <span class="atr">id</span>=<span class="val">"menu"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;</span><span class="nome">div</span> <span class="atr">class</span>=<span class="val">"menu-conteudo"</span><span class="tag">&gt;</span>
+    <span class="tag">&lt;</span><span class="nome">a</span> <span class="atr">href</span>=<span class="val">"#"</span> <span class="atr">class</span>=<span class="val">"menu-logo"</span><span class="tag">&gt;</span>VI<span class="tag">&lt;/</span><span class="nome">a</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;/</span><span class="nome">div</span><span class="tag">&gt;</span>
+<span class="tag">&lt;/</span><span class="nome">nav</span><span class="tag">&gt;</span>
+                </pre>
+                <div class="quadro"><img src="../src/assets/assets-tutorial/menu-do-topo.jpg" alt="Menu do topo"></div>
+            </div>
+        </section>
+
+
+        <!-- 02 — CAPA -->
+        <section class="secao">
+            <h2 class="titulo"><span>02</span> Capa</h2>
+              <div class="dupla" id="capa">
+                  <pre class="codigo"><span class="com">&lt;!-- CAPA (a primeira tela, que ocupa o monitor inteiro) --&gt;</span>
+<span class="tag">&lt;</span><span class="nome">header</span> <span class="atr">class</span>=<span class="val">"capa"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;</span><span class="nome">video</span> <span class="atr">class</span>=<span class="val">"capa-video"</span> <span class="atr">src</span>=<span class="val">"./src/assets/video-capa.mp4"</span> <span class="atr">muted</span> <span class="atr">playsinline</span> <span class="atr">preload</span>=<span class="val">"auto"</span><span class="tag">&gt;&lt;/</span><span class="nome">video</span><span class="tag">&gt;</span>
+
+  <span class="tag">&lt;</span><span class="nome">div</span> <span class="atr">class</span>=<span class="val">"capa-conteudo"</span><span class="tag">&gt;</span>
+    <span class="tag">&lt;</span><span class="nome">h1</span> <span class="atr">class</span>=<span class="val">"capa-moldura"</span><span class="tag">&gt;</span>
+      <span class="tag">&lt;</span><span class="nome">img</span> <span class="atr">src</span>=<span class="val">"./src/assets/gta-box-art.jpeg"</span> <span class="atr">alt</span>=<span class="val">"Grand Theft Auto VI"</span> <span class="atr">class</span>=<span class="val">"capa-imagem"</span><span class="tag">&gt;</span>
+    <span class="tag">&lt;/</span><span class="nome">h1</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;/</span><span class="nome">div</span><span class="tag">&gt;</span>
+
+  <span class="com">&lt;!-- Setinha no rodapé da capa, convidando a rolar a página --&gt;</span>
+  <span class="tag">&lt;</span><span class="nome">div</span> <span class="atr">class</span>=<span class="val">"capa-seta"</span><span class="tag">&gt;</span>
+    <span class="tag">&lt;</span><span class="nome">img</span> <span class="atr">src</span>=<span class="val">"./src/assets/seta-baixo.png"</span> <span class="atr">alt</span>=<span class="val">""</span> <span class="atr">class</span>=<span class="val">"seta-baixo"</span> <span class="atr">width</span>=<span class="val">"24"</span> <span class="atr">height</span>=<span class="val">"24"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;/</span><span class="nome">div</span><span class="tag">&gt;</span>
+<span class="tag">&lt;/</span><span class="nome">header</span><span class="tag">&gt;</span>
+                  </pre>
+                <div class="quadro"><img src="../src/assets/assets-tutorial/capa.jpg" alt="Capa"></div>
+            </div>
+        </section>
+
+
+        <!-- 03 — BARRA DE LANÇAMENTO -->
+        <section class="secao">
+            <h2 class="titulo"><span>03</span> Barra de lançamento</h2>
+            <div class="dupla">
+                <pre class="codigo"><span class="tag">&lt;</span><span class="nome">div</span> <span class="atr">class</span>=<span class="val">"capa-barra"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;</span><span class="nome">div</span> <span class="atr">class</span>=<span class="val">"capa-barra-conteudo"</span><span class="tag">&gt;</span>
+    <span class="tag">&lt;</span><span class="nome">div</span> <span class="atr">class</span>=<span class="val">"capa-lancamento"</span><span class="tag">&gt;</span>
+      <span class="tag">&lt;</span><span class="nome">p</span> <span class="atr">class</span>=<span class="val">"capa-rotulo"</span><span class="tag">&gt;</span>Lançamento<span class="tag">&lt;/</span><span class="nome">p</span><span class="tag">&gt;</span>
+      <span class="tag">&lt;</span><span class="nome">p</span> <span class="atr">class</span>=<span class="val">"capa-data"</span><span class="tag">&gt;</span>19 de Novembro de 2026<span class="tag">&lt;/</span><span class="nome">p</span><span class="tag">&gt;</span>
+    <span class="tag">&lt;/</span><span class="nome">div</span><span class="tag">&gt;</span>
+
+    <span class="tag">&lt;</span><span class="nome">a</span> <span class="atr">href</span>=<span class="val">"#"</span> <span class="atr">class</span>=<span class="val">"botao botao-primario"</span><span class="tag">&gt;</span>Reserve agora<span class="tag">&lt;/</span><span class="nome">a</span><span class="tag">&gt;</span>
+
+    <span class="tag">&lt;</span><span class="nome">div</span> <span class="atr">class</span>=<span class="val">"capa-plataformas"</span><span class="tag">&gt;</span>
+      <span class="tag">&lt;</span><span class="nome">p</span> <span class="atr">class</span>=<span class="val">"capa-rotulo"</span><span class="tag">&gt;</span>Disponível em<span class="tag">&lt;/</span><span class="nome">p</span><span class="tag">&gt;</span>
+      <span class="tag">&lt;</span><span class="nome">div</span> <span class="atr">class</span>=<span class="val">"lista-plataformas"</span><span class="tag">&gt;</span>
+        <span class="tag">&lt;</span><span class="nome">span</span> <span class="atr">class</span>=<span class="val">"texto-plataforma"</span><span class="tag">&gt;</span>PS5 · Xbox Series X|S<span class="tag">&lt;/</span><span class="nome">span</span><span class="tag">&gt;</span>
+      <span class="tag">&lt;/</span><span class="nome">div</span><span class="tag">&gt;</span>
+    <span class="tag">&lt;/</span><span class="nome">div</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;/</span><span class="nome">div</span><span class="tag">&gt;</span>
+<span class="tag">&lt;/</span><span class="nome">div</span><span class="tag">&gt;</span>
+                </pre>
+                <div class="quadro"><img src="../src/assets/assets-tutorial/barra-de-lancamento.jpg" alt="Barra de lançamento"></div>
+            </div>
+        </section>
+
+
+        <!-- 04 — HISTÓRIA -->
+        <section class="secao">
+            <h2 class="titulo"><span>04</span> História</h2>
+            <div class="dupla">
+                <pre class="codigo"><span class="com">&lt;!-- História --&gt;</span>
+<span class="tag">&lt;</span><span class="nome">section</span> <span class="atr">class</span>=<span class="val">"secao-historia"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;</span><span class="nome">div</span> <span class="atr">class</span>=<span class="val">"conteudo-central aparecer"</span><span class="tag">&gt;</span>
+    <span class="tag">&lt;</span><span class="nome">p</span> <span class="atr">class</span>=<span class="val">"rotulo"</span><span class="tag">&gt;</span>História<span class="tag">&lt;/</span><span class="nome">p</span><span class="tag">&gt;</span>
+    <span class="tag">&lt;</span><span class="nome">h2</span> <span class="atr">class</span>=<span class="val">"historia-titulo"</span><span class="tag">&gt;</span>Vice City, EUA.<span class="tag">&lt;/</span><span class="nome">h2</span><span class="tag">&gt;</span>
+    <span class="tag">&lt;</span><span class="nome">div</span> <span class="atr">class</span>=<span class="val">"historia-texto"</span><span class="tag">&gt;</span>
+      <span class="tag">&lt;</span><span class="nome">p</span><span class="tag">&gt;</span>
+        Jason e Lucia sempre souberam que tudo estava contra eles. Mas, depois
+        que um serviço simples dá errado, eles vão do lado mais sombrio ao lugar
+        mais ensolarado dos Estados Unidos, em meio a uma conspiração criminosa
+        se estendendo por toda a Leonida — e vão ter que aprender a depender um
+        do outro mais do que nunca para sobreviver.
+      <span class="tag">&lt;/</span><span class="nome">p</span><span class="tag">&gt;</span>
+    <span class="tag">&lt;/</span><span class="nome">div</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;/</span><span class="nome">div</span><span class="tag">&gt;</span>
+<span class="tag">&lt;/</span><span class="nome">section</span><span class="tag">&gt;</span>
+                </pre>
+                <div class="quadro"><img src="../src/assets/assets-tutorial/historia.jpg" alt="História"></div>
+            </div>
+        </section>
+
+
+        <!-- 05 — CARD DO TRAILER -->
+        <section class="secao">
+            <h2 class="titulo"><span>05</span> Card do trailer</h2>
+            <div class="dupla">
+                <pre class="codigo"><span class="com">&lt;!-- Vídeo: card com a imagem de fundo e o texto por cima --&gt;</span>
+<span class="tag">&lt;</span><span class="nome">section</span> <span class="atr">class</span>=<span class="val">"secao-video"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;</span><span class="nome">div</span> <span class="atr">class</span>=<span class="val">"conteudo-central aparecer"</span><span class="tag">&gt;</span>
+    <span class="tag">&lt;</span><span class="nome">article</span> <span class="atr">class</span>=<span class="val">"card-video"</span><span class="tag">&gt;</span>
+      <span class="tag">&lt;</span><span class="nome">div</span> <span class="atr">class</span>=<span class="val">"card-video-conteudo"</span><span class="tag">&gt;</span>
+        <span class="tag">&lt;</span><span class="nome">p</span> <span class="atr">class</span>=<span class="val">"rotulo"</span><span class="tag">&gt;</span>Vídeos<span class="tag">&lt;/</span><span class="nome">p</span><span class="tag">&gt;</span>
+        <span class="tag">&lt;</span><span class="nome">h2</span> <span class="atr">class</span>=<span class="val">"card-video-titulo"</span><span class="tag">&gt;</span>2º Trailer<span class="tag">&lt;/</span><span class="nome">h2</span><span class="tag">&gt;</span>
+        <span class="tag">&lt;</span><span class="nome">p</span> <span class="atr">class</span>=<span class="val">"card-video-descricao"</span><span class="tag">&gt;</span>A maior e mais imersiva evolução da série Grand Theft Auto até o momento.<span class="tag">&lt;/</span><span class="nome">p</span><span class="tag">&gt;</span>
+        <span class="tag">&lt;</span><span class="nome">a</span> <span class="atr">href</span>=<span class="val">"#"</span> <span class="atr">class</span>=<span class="val">"botao botao-primario card-video-botao"</span><span class="tag">&gt;</span>
+          <span class="tag">&lt;</span><span class="nome">img</span> <span class="atr">src</span>=<span class="val">"./src/assets/icone-play.png"</span> <span class="atr">alt</span>=<span class="val">""</span> <span class="atr">class</span>=<span class="val">"icone-play"</span> <span class="atr">width</span>=<span class="val">"18"</span> <span class="atr">height</span>=<span class="val">"18"</span><span class="tag">&gt;</span>
+          Ver agora
+        <span class="tag">&lt;/</span><span class="nome">a</span><span class="tag">&gt;</span>
+      <span class="tag">&lt;/</span><span class="nome">div</span><span class="tag">&gt;</span>
+    <span class="tag">&lt;/</span><span class="nome">article</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;/</span><span class="nome">div</span><span class="tag">&gt;</span>
+<span class="tag">&lt;/</span><span class="nome">section</span><span class="tag">&gt;</span>
+                </pre>
+                <div class="quadro"><img src="../src/assets/assets-tutorial/card-do-trailer.jpg" alt="Card do trailer"></div>
+            </div>
+        </section>
+
+
+        <!-- 06 — RODAPÉ -->
+        <section class="secao">
+            <h2 class="titulo"><span>06</span>Rodapé</h2>
+
+            <div class="dupla">
+                <pre class="codigo"><span class="com">&lt;!-- RODAPÉ --&gt;</span>
+<span class="tag">&lt;</span><span class="nome">footer</span> <span class="atr">class</span>=<span class="val">"rodape"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;</span><span class="nome">div</span> <span class="atr">class</span>=<span class="val">"conteudo-central rodape-conteudo"</span><span class="tag">&gt;</span>
+    <span class="tag">&lt;</span><span class="nome">div</span> <span class="atr">class</span>=<span class="val">"rodape-logo"</span><span class="tag">&gt;</span>GTA VI<span class="tag">&lt;/</span><span class="nome">div</span><span class="tag">&gt;</span>
+
+    <span class="tag">&lt;</span><span class="nome">nav</span> <span class="atr">class</span>=<span class="val">"rodape-links"</span><span class="tag">&gt;</span>
+      <span class="tag">&lt;</span><span class="nome">a</span> <span class="atr">href</span>=<span class="val">"#"</span><span class="tag">&gt;</span>Corporativo<span class="tag">&lt;/</span><span class="nome">a</span><span class="tag">&gt;</span>
+      <span class="tag">&lt;</span><span class="nome">a</span> <span class="atr">href</span>=<span class="val">"#"</span><span class="tag">&gt;</span>Privacidade<span class="tag">&lt;/</span><span class="nome">a</span><span class="tag">&gt;</span>
+      <span class="tag">&lt;</span><span class="nome">a</span> <span class="atr">href</span>=<span class="val">"#"</span><span class="tag">&gt;</span>Configurações de cookie<span class="tag">&lt;/</span><span class="nome">a</span><span class="tag">&gt;</span>
+      <span class="tag">&lt;</span><span class="nome">a</span> <span class="atr">href</span>=<span class="val">"#"</span><span class="tag">&gt;</span>Política de cookies<span class="tag">&lt;/</span><span class="nome">a</span><span class="tag">&gt;</span>
+      <span class="tag">&lt;</span><span class="nome">a</span> <span class="atr">href</span>=<span class="val">"#"</span><span class="tag">&gt;</span>Jurídico<span class="tag">&lt;/</span><span class="nome">a</span><span class="tag">&gt;</span>
+      <span class="tag">&lt;</span><span class="nome">a</span> <span class="atr">href</span>=<span class="val">"#"</span><span class="tag">&gt;</span>Não vender nem compartilhar as minhas informações pessoais<span class="tag">&lt;/</span><span class="nome">a</span><span class="tag">&gt;</span>
+    <span class="tag">&lt;/</span><span class="nome">nav</span><span class="tag">&gt;</span>
+
+    <span class="tag">&lt;</span><span class="nome">div</span> <span class="atr">class</span>=<span class="val">"rodape-redes"</span><span class="tag">&gt;</span>
+      <span class="tag">&lt;</span><span class="nome">a</span> <span class="atr">href</span>=<span class="val">"#"</span> <span class="atr">aria-label</span>=<span class="val">"YouTube"</span> <span class="atr">class</span>=<span class="val">"rede-social"</span><span class="tag">&gt;</span>YT<span class="tag">&lt;/</span><span class="nome">a</span><span class="tag">&gt;</span>
+      <span class="tag">&lt;</span><span class="nome">a</span> <span class="atr">href</span>=<span class="val">"#"</span> <span class="atr">aria-label</span>=<span class="val">"Instagram"</span> <span class="atr">class</span>=<span class="val">"rede-social"</span><span class="tag">&gt;</span>IG<span class="tag">&lt;/</span><span class="nome">a</span><span class="tag">&gt;</span>
+      <span class="tag">&lt;</span><span class="nome">a</span> <span class="atr">href</span>=<span class="val">"#"</span> <span class="atr">aria-label</span>=<span class="val">"X / Twitter"</span> <span class="atr">class</span>=<span class="val">"rede-social"</span><span class="tag">&gt;</span>X<span class="tag">&lt;/</span><span class="nome">a</span><span class="tag">&gt;</span>
+    <span class="tag">&lt;/</span><span class="nome">div</span><span class="tag">&gt;</span>
+
+    <span class="tag">&lt;</span><span class="nome">p</span> <span class="atr">class</span>=<span class="val">"rodape-classificacao"</span><span class="tag">&gt;</span>
+      Pode incluir conteúdo inapropriado para crianças. Acesse
+      <span class="tag">&lt;</span><span class="nome">a</span> <span class="atr">href</span>=<span class="val">"https://www.gov.br"</span> <span class="atr">target</span>=<span class="val">"_blank"</span> <span class="atr">rel</span>=<span class="val">"noopener"</span><span class="tag">&gt;</span>gov.br<span class="tag">&lt;/</span><span class="nome">a</span><span class="tag">&gt;</span> para ver informações da classificação indicativa.
+    <span class="tag">&lt;/</span><span class="nome">p</span><span class="tag">&gt;</span>
+
+    <span class="tag">&lt;</span><span class="nome">p</span> <span class="atr">class</span>=<span class="val">"rodape-direitos"</span><span class="tag">&gt;</span>&amp;copy; 2026 Rockstar Games, Inc. GTA VI, Grand Theft Auto e marcas registradas são propriedade da Take-Two Interactive Software.<span class="tag">&lt;/</span><span class="nome">p</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;/</span><span class="nome">div</span><span class="tag">&gt;</span>
+<span class="tag">&lt;/</span><span class="nome">footer</span><span class="tag">&gt;</span>
+                </pre>
+                <div class="quadro"><img src="../src/assets/assets-tutorial/rodape.jpg" alt="Rodapé"></div>
+            </div>
+        </section>
+    </main>
+</body>
+</html>

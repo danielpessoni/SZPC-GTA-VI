@@ -1,0 +1,230 @@
+    .cabecalho {
+        width: 100%;
+        border-bottom: var(--espessura-borda) solid var(--cor-borda-primaria);
+        background: var(--cor-fundo-secundaria);
+    }
+
+    .banner {
+        display: block;
+        width: 100%;
+        max-width: 1920px;
+        height: auto;
+        margin: 0 auto;
+    }
+
+
+    /* ========================================
+       CONTEÚDO PRINCIPAL
+    ======================================== */
+
+    .conteudo {
+        width: 100%;
+        max-width: var(--largura-maxima-conteudo);
+        margin: 0 auto;
+        padding: var(--espacamento-secao-vertical) var(--espacamento-secao-horizontal);
+    }
+
+
+    /* ========================================
+       APRESENTAÇÃO
+    ======================================== */
+
+    .apresentacao {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: var(--espacamento-colunas);
+        align-items: stretch;
+    }
+
+
+    /* ========================================
+       COLUNAS
+    ======================================== */
+
+    .coluna {
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+
+        padding: 1.5rem;
+
+        background: var(--cor-fundo-secundaria);
+        border: var(--espessura-borda) solid var(--cor-borda-primaria);
+        border-radius: var(--raio-borda-grande);
+    }
+
+    .coluna-projeto {
+        border-color: var(--cor-destaque-primaria);
+    }
+
+
+    /* ========================================
+       IMAGENS
+    ======================================== */
+
+    .imagem-container {
+        margin-bottom: 1.5rem;
+    }
+
+    .avatar,
+    .imagem-projeto {
+        display: block;
+        width: 100%;
+        height: auto;
+        border-radius: var(--raio-borda-imagem);
+    }
+
+    .avatar {
+        aspect-ratio: 1;
+        object-fit: cover;
+    }
+
+    .imagem-projeto {
+        aspect-ratio: 16 / 9;
+        object-fit: cover;
+    }
+
+
+    /* ========================================
+       TEXTOS
+    ======================================== */
+
+    .texto {
+        flex: 1;
+    }
+
+    .titulo {
+        margin: 0 0 0.75rem;
+
+        font-family: var(--fonte-titulo);
+        font-size: clamp(
+            var(--tamanho-fonte-titulo-minimo),
+            2.6vw,
+            var(--tamanho-fonte-titulo-maximo)
+        );
+        font-weight: var(--peso-fonte-titulo);
+        line-height: 1;
+        letter-spacing: var(--letter-spacing-titulo);
+        text-transform: uppercase;
+
+        color: var(--cor-destaque-terciaria);
+    }
+
+    .nome-autor,
+    .nome-mentor {
+        margin: 0 0 1rem;
+
+        font-size: 0.9375rem;
+        font-weight: 600;
+
+        color: var(--cor-destaque-secundaria);
+    }
+
+    .descricao {
+        margin: 0;
+
+        font-size: 0.9375rem;
+        line-height: 1.7;
+
+        color: var(--cor-fonte-secundaria);
+    }
+
+
+    /* ========================================
+       NAVEGAÇÃO / BOTÕES
+    ======================================== */
+
+    .navegacao-projeto {
+        display: flex;
+        flex-direction: column;
+        gap: 0.625rem;
+
+        margin-top: 1.5rem;
+    }
+
+    .botao {
+        display: block;
+
+        padding: 0.75rem 1rem;
+
+        border: var(--espessura-borda) solid var(--cor-borda-primaria);
+        border-radius: var(--raio-borda-imagem);
+
+        background: var(--cor-fundo-primaria);
+
+        font-family: var(--fonte-interface);
+        font-size: 0.875rem;
+        font-weight: 600;
+        line-height: 1.2;
+        text-align: center;
+        text-decoration: none;
+
+        color: var(--cor-fonte-primaria);
+
+        transition:
+            border-color 0.2s ease,
+            color 0.2s ease,
+            background-color 0.2s ease;
+    }
+
+    .botao:hover,
+    .botao:focus-visible {
+        border-color: var(--cor-destaque-primaria);
+        background: var(--cor-destaque-primaria);
+        color: var(--cor-fundo-primaria);
+    }
+
+    .coluna-projeto .botao:first-child {
+        border-color: var(--cor-destaque-primaria);
+        color: var(--cor-destaque-primaria);
+    }
+
+    .coluna-projeto .botao:first-child:hover,
+    .coluna-projeto .botao:first-child:focus-visible {
+        background: var(--cor-destaque-primaria);
+        color: var(--cor-fundo-primaria);
+    }
+
+
+    /* ========================================
+       RESPONSIVIDADE
+    ======================================== */
+
+    @media (max-width: 62.5rem) {
+        .apresentacao {
+            grid-template-columns: 1fr;
+        }
+
+        .coluna {
+            display: grid;
+            grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+            gap: 1.5rem;
+        }
+
+        .imagem-container {
+            margin: 0;
+        }
+
+        .navegacao-projeto {
+            grid-column: 1 / -1;
+        }
+
+        .coluna-mentores > .botao {
+            grid-column: 1 / -1;
+        }
+    }
+
+
+    @media (max-width: 40rem) {
+        .conteudo {
+            padding: 2rem 1rem;
+        }
+
+        .coluna {
+            display: flex;
+        }
+
+        .imagem-container {
+            margin-bottom: 1.5rem;
+        }
+    }

@@ -1,0 +1,144 @@
+/* ========================================
+   SEÇÕES
+======================================== */
+
+.secao {
+  max-width: var(--largura-maxima-conteudo);
+  margin: 0 auto;
+  padding: var(--espacamento-secao-vertical) var(--espacamento-secao-horizontal);
+}
+
+.secao + .secao {
+  border-top: var(--espessura-borda) solid var(--cor-borda-primaria);
+}
+
+
+/* ========================================
+   TÍTULOS
+======================================== */
+
+.titulo {
+  display: flex;
+  align-items: baseline;
+  gap: var(--espacamento-titulo);
+  margin: 0 0 var(--margem-titulo-inferior);
+
+  font-family: var(--fonte-titulo);
+  font-weight: var(--peso-fonte-titulo);
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-titulo);
+
+  font-size: clamp(
+    var(--tamanho-fonte-titulo-minimo),
+    2.6vw,
+    var(--tamanho-fonte-titulo-maximo)
+  );
+
+  color: var(--cor-destaque-terciaria);
+}
+
+.titulo span {
+  font-size: var(--tamanho-fonte-indice);
+  color: var(--cor-destaque-primaria);
+  font-variant-numeric: tabular-nums;
+}
+
+
+/* ========================================
+   ÁREA DUPLA
+======================================== */
+
+.dupla {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: var(--espacamento-colunas);
+  align-items: start;
+}
+
+
+/* ========================================
+   CÓDIGO
+======================================== */
+
+pre.codigo {
+  margin: 0;
+  padding: var(--padding-codigo-vertical) var(--padding-codigo-horizontal);
+  overflow-x: auto;
+
+  background: var(--cor-fundo-secundaria);
+  border: var(--espessura-borda) solid var(--cor-borda-primaria);
+  border-radius: var(--raio-borda-grande);
+
+  font-family: var(--fonte-codigo);
+  font-size: var(--tamanho-fonte-codigo);
+  line-height: var(--altura-linha-codigo);
+  tab-size: 2;
+  color: #e6dcf7;
+}
+
+pre.codigo .tag {
+  color: var(--cor-destaque-primaria);
+}
+
+pre.codigo .nome {
+  color: #ff8ab8;
+}
+
+pre.codigo .atr {
+  color: var(--cor-destaque-secundaria);
+}
+
+pre.codigo .val {
+  color: var(--cor-destaque-terciaria);
+}
+
+pre.codigo .com {
+  color: #6f6291;
+  font-style: italic;
+}
+
+
+/* ========================================
+   QUADRO DE DEMONSTRAÇÃO
+======================================== */
+
+.quadro {
+  position: sticky;
+  top: var(--posicao-quadro-topo);
+
+  background: var(--cor-fundo-secundaria);
+  border: var(--espessura-borda) solid var(--cor-borda-primaria);
+  border-radius: var(--raio-borda-grande);
+  padding: var(--padding-quadro);
+}
+
+.quadro img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: var(--raio-borda-imagem);
+
+  box-shadow:
+    0 var(--sombra-quadro-deslocamento-y)
+    var(--sombra-quadro-desfoque)
+    rgba(0, 0, 0, var(--sombra-quadro-opacidade));
+}
+
+
+/* ========================================
+    SCROLLBAR
+======================================== */
+
+*::-webkit-scrollbar {
+	width: 4px;
+  height: 4px;
+}
+
+*::-webkit-scrollbar-track {
+	background: var(--cor-fundo-secundaria);
+}
+
+*::-webkit-scrollbar-thumb {
+	background-color: var(--cor-scroll);
+	border-radius: 10px;
+}

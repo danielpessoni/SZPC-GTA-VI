@@ -1,0 +1,89 @@
+:root {
+  /* ================================
+     CORES
+  ================================ */
+
+  --cor-fundo-primaria: #0b0713;
+  --cor-fundo-secundaria: #150e24;
+
+  --cor-borda-primaria: #2e2145;
+
+  --cor-fonte-primaria: #f4effb;
+  --cor-fonte-secundaria: #9c8dbb;
+
+  --cor-destaque-primaria: #ff3d8b;
+  --cor-destaque-secundaria: #35d6e7;
+  --cor-destaque-terciaria: #f7e8c9;
+
+  --cor-scroll: #582965;
+
+
+  /* ================================
+     TIPOGRAFIA
+  ================================ */
+
+  --fonte-interface: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --fonte-titulo: "Anton", "Impact", "Franklin Gothic Bold", "Arial Narrow", sans-serif;
+  --fonte-codigo: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+  --tamanho-fonte-titulo-minimo: 1.25rem;
+  --tamanho-fonte-titulo-maximo: 1.875rem;
+  --tamanho-fonte-indice: 0.875rem;
+  --tamanho-fonte-codigo: 0.84375rem;
+
+  --altura-linha-codigo: 1.75;
+  --peso-fonte-titulo: 400;
+
+  --letter-spacing-titulo: 0.02em;
+
+
+  /* ================================
+     LAYOUT
+  ================================ */
+
+  --largura-maxima-conteudo: 97.5rem;
+
+  --espacamento-secao-vertical: 2.75rem;
+  --espacamento-secao-horizontal: 1.5rem;
+
+  --espacamento-colunas: 1.25rem;
+
+  --espacamento-titulo: 0.75rem;
+  --margem-titulo-inferior: 1.125rem;
+
+
+  /* ================================
+     ESPAÇAMENTOS INTERNOS
+  ================================ */
+
+  --padding-codigo-vertical: 1.25rem;
+  --padding-codigo-horizontal: 1.125rem;
+
+  --padding-quadro: 0.875rem;
+
+
+  /* ================================
+     BORDAS
+  ================================ */
+
+  --espessura-borda: 0.0625rem;
+
+  --raio-borda-grande: 0.75rem;
+  --raio-borda-imagem: 0.4375rem;
+
+
+  /* ================================
+     POSICIONAMENTO
+  ================================ */
+
+  --posicao-quadro-topo: 1.5rem;
+
+
+  /* ================================
+     SOMBRAS
+  ================================ */
+
+  --sombra-quadro-deslocamento-y: 0.875rem;
+  --sombra-quadro-desfoque: 2.5rem;
+  --sombra-quadro-opacidade: 0.55;
+}
