@@ -174,13 +174,16 @@
         color: var(--cor-fundo-primaria);
     }
 
-    .coluna-projeto .botao:first-child {
+    .coluna-projeto .botao:first-child,
+    .coluna-projeto .botao:last-child {
         border-color: var(--cor-destaque-primaria);
         color: var(--cor-destaque-primaria);
     }
 
     .coluna-projeto .botao:first-child:hover,
-    .coluna-projeto .botao:first-child:focus-visible {
+    .coluna-projeto .botao:first-child:focus-visible,
+    .coluna-projeto .botao:last-child:hover,
+    .coluna-projeto .botao:last-child:focus-visible {
         background: var(--cor-destaque-primaria);
         color: var(--cor-fundo-primaria);
     }
