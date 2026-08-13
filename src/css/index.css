@@ -75,8 +75,8 @@
     }
 
     .avatar {
-        /* aspect-ratio: 1; */
-        object-fit: cover;
+        aspect-ratio: 16 / 9;
+        object-fit: contain;
     }
 
     .imagem-projeto {
@@ -90,10 +90,11 @@
     ======================================== */
 
     .texto {
-        flex: 1;
+        margin-bottom: 1.5rem;
     }
 
-    .titulo {
+    .titulo,
+    .nome {
         text-align: center;
 
         font-family: var(--fonte-titulo);
@@ -108,15 +109,7 @@
         text-transform: uppercase;
 
         color: var(--cor-destaque-terciaria);
-    }
-
-    .nome {
-        margin: 0 0 1rem;
-
-        font-size: 0.9375rem;
-        font-weight: 600;
-
-        color: var(--cor-destaque-secundaria);
+        margin: 0;
     }
 
     .descricao {
@@ -133,12 +126,13 @@
        NAVEGAÇÃO / BOTÕES
     ======================================== */
 
-    .navegacao-projeto {
+    .navegacao-projeto,
+    .navegacao-autor,
+    .navegacao-mentores {
         display: flex;
         flex-direction: column;
         gap: 0.625rem;
-
-        margin-top: 1.5rem;
+        margin: 0;
     }
 
     .botao {
@@ -200,19 +194,33 @@
         .coluna {
             display: grid;
             grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+            grid-template-rows: auto auto auto;
             gap: 1.5rem;
         }
 
         .imagem-container {
+            grid-row: 1 / 4;
+            grid-column: 1;
             margin: 0;
         }
 
-        .navegacao-projeto {
-            grid-column: 1 / -1;
+        .texto {
+            grid-row: 1;
+            grid-column: 2;
+            margin-bottom: 0;
         }
 
-        .coluna-mentores > .botao {
+        .navegacao-projeto,
+        .navegacao-autor,
+        .navegacao-mentores {
             grid-column: 1 / -1;
+            grid-row: 3;
+        }
+
+        .coluna-autor .texto {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
         }
     }
 
@@ -224,9 +232,14 @@
 
         .coluna {
             display: flex;
+            flex-direction: column;
         }
 
         .imagem-container {
+            margin-bottom: 1.5rem;
+        }
+
+        .texto {
             margin-bottom: 1.5rem;
         }
     }
