@@ -191,6 +191,18 @@
             grid-template-columns: 1fr;
         }
 
+        .coluna-projeto {
+            order: 1;
+        }
+
+        .coluna-autor {
+            order: 2;
+        }
+
+        .coluna-mentores {
+            order: 3;
+        }
+
         .coluna {
             display: grid;
             grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
