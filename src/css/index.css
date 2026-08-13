@@ -75,7 +75,7 @@
     }
 
     .avatar {
-        aspect-ratio: 1;
+        /* aspect-ratio: 1; */
         object-fit: cover;
     }
 
@@ -94,7 +94,7 @@
     }
 
     .titulo {
-        margin: 0 0 0.75rem;
+        text-align: center;
 
         font-family: var(--fonte-titulo);
         font-size: clamp(
@@ -110,8 +110,7 @@
         color: var(--cor-destaque-terciaria);
     }
 
-    .nome-autor,
-    .nome-mentor {
+    .nome {
         margin: 0 0 1rem;
 
         font-size: 0.9375rem;
