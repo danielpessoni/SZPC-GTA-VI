@@ -1,7 +1,12 @@
 :root {
+
+   /* ============================================================
+       VARIÁVEIS COMUNS
+    ============================================================ */
+
    /* ================================
-     CORES
-  ================================ */
+       CORES
+    ================================ */
 
    --cor-fundo-primaria: #0b0713;
    --cor-fundo-secundaria: #150e24;
@@ -12,40 +17,27 @@
    --cor-fonte-secundaria: #9c8dbb;
 
    --cor-destaque-primaria: #ff3d8b;
-   --cor-destaque-secundaria: #35d6e7;
    --cor-destaque-terciaria: #f7e8c9;
-
-   --cor-scroll: #582965;
 
 
    /* ================================
-     TIPOGRAFIA
-  ================================ */
+       TIPOGRAFIA
+    ================================ */
 
    --fonte-interface: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
    --fonte-titulo: "Anton", "Impact", "Franklin Gothic Bold", "Arial Narrow", sans-serif;
-   --fonte-codigo: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
 
    --tamanho-fonte-titulo-minimo: 1.25rem;
    --tamanho-fonte-titulo-maximo: 1.875rem;
-   --tamanho-fonte-indice: 0.875rem;
-   --tamanho-fonte-codigo: 0.84375rem;
 
-   --fonte-responsiva: clamp(0.6875rem, 0.65rem + 0.2vw, 0.75rem);
-   --peso-regular: 400;
-
-
-
-   --altura-linha-codigo: 1.75;
-   --altura-linha-disclaimer: 1.55;
    --peso-fonte-titulo: 400;
 
    --letter-spacing-titulo: 0.02em;
 
 
    /* ================================
-     LAYOUT
-  ================================ */
+       LAYOUT
+    ================================ */
 
    --largura-maxima-conteudo: 97.5rem;
 
@@ -54,13 +46,89 @@
 
    --espacamento-colunas: 1.25rem;
 
-   --espacamento-titulo: 0.75rem;
-   --margem-titulo-inferior: 1.125rem;
+
+   /* ================================
+       BORDAS
+    ================================ */
+
+   --espessura-borda: 0.0625rem;
+
+   --raio-borda-grande: 0.75rem;
+   --raio-borda-imagem: 0.4375rem;
+
+
+   /* ============================================================
+       HUB
+    ============================================================ */
+
+   /* ================================
+       CORES
+    ================================ */
+
+   --cor-scroll: #582965;
 
 
    /* ================================
-     ESPAÇAMENTOS INTERNOS
-  ================================ */
+       TIPOGRAFIA
+    ================================ */
+
+   --fonte-interface-hub: var(--fonte-interface);
+
+   --tamanho-fonte-descricao-hub: 0.9375rem;
+   --tamanho-fonte-botao-hub: 0.875rem;
+
+   --fonte-responsiva: clamp(0.6875rem, 0.65rem + 0.2vw, 0.75rem);
+
+   --peso-regular: 400;
+   --peso-fonte-botao-hub: 600;
+
+   --altura-linha-descricao-hub: 1.7;
+   --altura-linha-botao-hub: 1.2;
+   --altura-linha-disclaimer: 1.55;
+
+
+   /* ================================
+       LAYOUT
+    ================================ */
+
+   --padding-coluna-hub: 1.5rem;
+
+   --margem-imagem-hub: 1.5rem;
+   --margem-texto-hub: 1.5rem;
+
+   --gap-navegacao-hub: 0.625rem;
+
+   --padding-botao-hub-vertical: 0.75rem;
+   --padding-botao-hub-horizontal: 1rem;
+
+   --padding-conteudo-mobile-hub-vertical: 2rem;
+   --padding-conteudo-mobile-hub-horizontal: 1rem;
+
+   --gap-coluna-responsiva-hub: 1.5rem;
+
+
+   /* ============================================================
+       TUTORIAL
+    ============================================================ */
+
+   /* ================================
+       TIPOGRAFIA
+    ================================ */
+
+   --fonte-codigo: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+   --tamanho-fonte-indice: 0.875rem;
+   --tamanho-fonte-codigo: 0.84375rem;
+
+   --altura-linha-codigo: 1.75;
+
+
+   /* ================================
+       ESPAÇAMENTOS INTERNOS
+    ================================ */
+
+   --espacamento-titulo: 0.75rem;
+   --margem-titulo-inferior: 1.125rem;
 
    --padding-codigo-vertical: 1.25rem;
    --padding-codigo-horizontal: 1.125rem;
@@ -69,27 +137,144 @@
 
 
    /* ================================
-     BORDAS
-  ================================ */
+       CORES DO CÓDIGO
+    ================================ */
 
-   --espessura-borda: 0.0625rem;
-
-   --raio-borda-grande: 0.75rem;
-   --raio-borda-imagem: 0.4375rem;
+   --cor-codigo-texto: #e6dcf7;
+   --cor-codigo-nome: #ff8ab8;
+   --cor-codigo-comentario: #6f6291;
 
 
    /* ================================
-     POSICIONAMENTO
-  ================================ */
+       POSICIONAMENTO
+    ================================ */
 
    --posicao-quadro-topo: 1.5rem;
 
 
    /* ================================
-     SOMBRAS
-  ================================ */
+       SOMBRAS
+    ================================ */
 
    --sombra-quadro-deslocamento-y: 0.875rem;
    --sombra-quadro-desfoque: 2.5rem;
    --sombra-quadro-opacidade: 0.55;
+
+
+   /* ================================
+       RESPONSIVIDADE
+    ================================ */
+
+   --breakpoint-tutorial: 62.5rem;
+
+
+   /* ============================================================
+       PROJETO
+    ============================================================ */
+
+   /* ================================
+       CORES
+    ================================ */
+
+   --cor-fundo-projeto: #0d0d1a;
+   --cor-fonte-projeto: #ffffff;
+
+   --cor-fonte-secundaria-projeto: #c4c0d8;
+   --cor-fonte-terciaria-projeto: #6e6e85;
+
+   --cor-destaque-projeto: #ff6a6a;
+   --cor-destaque-clara-projeto: #f3e4c4;
+
+
+   /* ================================
+       TIPOGRAFIA
+    ================================ */
+
+   --fonte-interface-projeto: 'Questrial', sans-serif;
+   --fonte-titulo-projeto: 'Oswald', sans-serif;
+
+
+   /* ================================
+       LAYOUT
+    ================================ */
+
+   --largura-maxima-projeto: 75rem;
+   --largura-maxima-capa-projeto: 56.25rem;
+
+   --padding-menu-vertical-projeto: 0.5rem;
+   --padding-menu-horizontal-projeto: 2rem;
+
+   --padding-conteudo-projeto: 0 2rem;
+
+   --padding-capa-topo-projeto: 2.5rem;
+   --padding-capa-conteudo-topo-projeto: 1rem;
+   --padding-capa-conteudo-inferior-projeto: 0.5rem;
+
+   --largura-capa-projeto: 90%;
+
+
+   /* ================================
+       TIPOGRAFIA / ELEMENTOS
+    ================================ */
+
+   --tamanho-fonte-logo-projeto: 1.8125rem;
+   --tamanho-fonte-botao-projeto: 1rem;
+   --tamanho-fonte-rotulo-projeto: 0.875rem;
+   --tamanho-fonte-data-projeto: 1.5rem;
+   --tamanho-fonte-plataforma-projeto: 0.875rem;
+   --tamanho-fonte-titulo-historia-projeto: 3.5rem;
+   --tamanho-fonte-texto-historia-projeto: 1.25rem;
+   --tamanho-fonte-titulo-video-projeto: 3rem;
+   --tamanho-fonte-descricao-video-projeto: 1.125rem;
+
+
+   /* ================================
+       ESPAÇAMENTOS
+    ================================ */
+
+   --gap-menu-projeto: 2rem;
+   --gap-plataformas-projeto: 0.5rem;
+   --gap-capa-barra-projeto: 2rem;
+
+   --padding-botao-projeto-vertical: 0.875rem;
+   --padding-botao-projeto-horizontal: 2.1875rem;
+
+   --padding-capa-barra-projeto: 1.25rem 0;
+
+   --padding-secao-historia-projeto: 7.5rem 0;
+   --padding-secao-video-projeto: 6.25rem;
+
+   --padding-card-video-projeto: 2.5rem;
+
+   --margem-rotulo-projeto: 0.75rem;
+   --margem-titulo-historia-projeto: 2rem;
+   --margem-titulo-video-projeto: 0.5rem;
+   --margem-descricao-video-projeto: 1.5rem;
+
+
+   /* ================================
+       DIMENSÕES
+    ================================ */
+
+   --raio-capa-projeto: 0.75rem;
+   --raio-card-video-projeto: 1.5rem;
+
+   --largura-texto-historia-projeto: 50rem;
+   --largura-descricao-video-projeto: 26.25rem;
+
+   --tamanho-logo-video-projeto: 1.125rem;
+
+
+   /* ================================
+       EFEITOS
+    ================================ */
+
+   --sombra-logo-projeto: 0 0 0.625rem rgba(255, 61, 139, 0.4);
+   --sombra-botao-projeto: 0 0 1.75rem rgba(255, 61, 139, 0.65);
+
+   --cor-fundo-barra-projeto: rgba(13, 13, 26, 0.85);
+   --cor-borda-barra-projeto: rgba(255, 255, 255, 0.5);
+
+   --cor-gradiente-card-video-projeto: rgba(13, 13, 26, 0.9);
+
 }
