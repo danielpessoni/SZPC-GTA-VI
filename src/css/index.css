@@ -98,11 +98,9 @@
         text-align: center;
 
         font-family: var(--fonte-titulo);
-        font-size: clamp(
-            var(--tamanho-fonte-titulo-minimo),
-            2.6vw,
-            var(--tamanho-fonte-titulo-maximo)
-        );
+        font-size: clamp(var(--tamanho-fonte-titulo-minimo),
+                2.6vw,
+                var(--tamanho-fonte-titulo-maximo));
         font-weight: var(--peso-fonte-titulo);
         line-height: 1;
         letter-spacing: var(--letter-spacing-titulo);
@@ -179,6 +177,37 @@
     .coluna-projeto .botao:last-child:focus-visible {
         background: var(--cor-destaque-primaria);
         color: var(--cor-fundo-primaria);
+    }
+
+    /* ========================================
+       DISCLAIMER
+    ======================================== */
+
+    .disclaimer {
+        margin-top: 1.5rem;
+        font-size: var(--fonte-responsiva);
+        font-weight: var(--peso-regular);
+        line-height: var(--altura-linha-disclaimer);
+        color: var(--cor-scroll);
+        text-align: center;
+    }
+
+    /* ========================================
+    SCROLLBAR
+======================================== */
+
+    *::-webkit-scrollbar {
+        width: 4px;
+        height: 4px;
+    }
+
+    *::-webkit-scrollbar-track {
+        background: var(--cor-fundo-secundaria);
+    }
+
+    *::-webkit-scrollbar-thumb {
+        background-color: var(--cor-scroll);
+        border-radius: 10px;
     }
 
 
