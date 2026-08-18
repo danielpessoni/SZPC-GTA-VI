@@ -192,23 +192,7 @@
         text-align: center;
     }
 
-    /* ========================================
-    SCROLLBAR
-======================================== */
 
-    *::-webkit-scrollbar {
-        width: 4px;
-        height: 4px;
-    }
-
-    *::-webkit-scrollbar-track {
-        background: var(--cor-fundo-secundaria);
-    }
-
-    *::-webkit-scrollbar-thumb {
-        background-color: var(--cor-scroll);
-        border-radius: 10px;
-    }
 
 
     /* ========================================
