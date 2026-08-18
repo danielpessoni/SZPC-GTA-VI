@@ -184,12 +184,14 @@
     ======================================== */
 
     .disclaimer {
-        margin-top: 1.5rem;
+        margin: 1rem;
         font-size: var(--fonte-responsiva);
         font-weight: var(--peso-regular);
         line-height: var(--altura-linha-disclaimer);
         color: var(--cor-scroll);
         text-align: center;
+        align-items: center;
+        margin-bottom: -1rem;
     }
 
 
