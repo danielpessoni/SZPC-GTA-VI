@@ -108,7 +108,7 @@
 
 
    /* ============================================================
-       TUTORIAL
+       TUTORIAL #01
     ============================================================ */
 
    /* ================================
@@ -198,7 +198,6 @@
    --fonte-interface-projeto: 'Questrial', sans-serif;
    --fonte-titulo-projeto: 'Oswald', sans-serif;
 
-   --tamanho-fonte-logo-projeto: 1.8125rem;
    --tamanho-fonte-botao-projeto: 1rem;
    --tamanho-fonte-rotulo-projeto: 0.875rem;
    --tamanho-fonte-data-projeto: 1.5rem;
@@ -210,10 +209,7 @@
    --tamanho-fonte-titulo-video-projeto: 3rem;
    --tamanho-fonte-descricao-video-projeto: 1.125rem;
 
-   --tamanho-fonte-link-rodape-projeto: 0.875rem;
-   --tamanho-fonte-rede-social-projeto: 0.875rem;
-   --tamanho-fonte-classificacao-rodape-projeto: 0.8125rem;
-   --tamanho-fonte-direitos-rodape-projeto: 0.8125rem;
+   --tamanho-fonte-descricao-rodape-projeto: 0.8125rem;
 
 
    /* ================================
@@ -252,11 +248,14 @@
    --padding-secao-video-projeto: 6.25rem;
 
    --padding-card-video-projeto: 2.5rem;
+   --padding-botao-projeto: 14px 35px;
+   --padding-capa-conteudo-projeto: 16px 0 8px;
 
    --margem-rotulo-projeto: 0.75rem;
    --margem-titulo-historia-projeto: 2rem;
    --margem-titulo-video-projeto: 0.5rem;
    --margem-descricao-video-projeto: 1.5rem;
+   --margem-card-titulo-video-projeto: 0.5rem;
 
 
    /* ================================
@@ -279,10 +278,13 @@
    --raio-capa-projeto: 0.75rem;
    --raio-card-video-projeto: 1.5rem;
 
+   --border-radius-botao-projeto: 50px;
+   --border-radius-card-video-projeto: 24px;
+   --border-radius-capa-projeto: 12px;
+
+   --max-width-capa-moldura-projeto: 900px;
    --largura-texto-historia-projeto: 50rem;
    --largura-descricao-video-projeto: 26.25rem;
-
-   --tamanho-logo-video-projeto: 1.125rem;
 
 
    /* ================================
@@ -319,7 +321,31 @@
 
    --gap-capa-barra-mobile-projeto: 1rem;
 
-   --proporcao-card-video-mobile-projeto: 4 / 5;
-   --posicao-fundo-card-video-mobile-projeto: 30% center;
+
+   /* ============================================================
+       TUTORIAL #02
+    ============================================================ */
+
+   /* ================================
+       CORES
+    ================================ */
+
+   --cor-destaque-secundaria: #35d6e7;
+   --cor-roxo-primario-tutorial: #a259ff;
+   --cor-roxo-escuro-tutorial: #1c1330;
+   --cor-texto-notas-tutorial: #d9cfee;
+   --cor-fundo-demo-tutorial: #080510;
+
+
+   /* ================================
+       LAYOUT
+    ================================ */
+
+   --border-radius-painel-tutorial: 14px;
+   --padding-painel-topo-tutorial: 10px 14px;
+   --padding-codigo-tutorial: 18px 16px;
+   --max-width-secao-tutorial: 1560px;
+   --padding-secao-tutorial: 56px 24px;
+   --scroll-margin-tutorial: 70px;
 
 }

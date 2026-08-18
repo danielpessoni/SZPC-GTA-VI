@@ -73,7 +73,7 @@ pre.codigo {
   font-size: var(--tamanho-fonte-codigo);
   line-height: var(--altura-linha-codigo);
   tab-size: 2;
-  color: #e6dcf7;
+  color: var(--cor-codigo-texto);
 }
 
 pre.codigo .tag {
@@ -81,7 +81,7 @@ pre.codigo .tag {
 }
 
 pre.codigo .nome {
-  color: #ff8ab8;
+  color: var(--cor-codigo-nome);
 }
 
 pre.codigo .atr {
@@ -93,7 +93,7 @@ pre.codigo .val {
 }
 
 pre.codigo .com {
-  color: #6f6291;
+  color: var(--cor-codigo-comentario);
   font-style: italic;
 }
 
