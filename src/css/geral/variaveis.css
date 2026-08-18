@@ -185,6 +185,11 @@
    --cor-destaque-projeto: #ff6a6a;
    --cor-destaque-clara-projeto: #f3e4c4;
 
+   --cor-fundo-rodape-projeto: #14142a;
+
+   --cor-borda-rodape-projeto: rgba(255, 255, 255, 0.05);
+   --cor-fundo-rede-social-projeto: rgba(255, 255, 255, 0.05);
+
 
    /* ================================
        TIPOGRAFIA
@@ -192,6 +197,23 @@
 
    --fonte-interface-projeto: 'Questrial', sans-serif;
    --fonte-titulo-projeto: 'Oswald', sans-serif;
+
+   --tamanho-fonte-logo-projeto: 1.8125rem;
+   --tamanho-fonte-botao-projeto: 1rem;
+   --tamanho-fonte-rotulo-projeto: 0.875rem;
+   --tamanho-fonte-data-projeto: 1.5rem;
+   --tamanho-fonte-plataforma-projeto: 0.875rem;
+
+   --tamanho-fonte-titulo-historia-projeto: 3.5rem;
+   --tamanho-fonte-texto-historia-projeto: 1.25rem;
+
+   --tamanho-fonte-titulo-video-projeto: 3rem;
+   --tamanho-fonte-descricao-video-projeto: 1.125rem;
+
+   --tamanho-fonte-link-rodape-projeto: 0.875rem;
+   --tamanho-fonte-rede-social-projeto: 0.875rem;
+   --tamanho-fonte-classificacao-rodape-projeto: 0.8125rem;
+   --tamanho-fonte-direitos-rodape-projeto: 0.8125rem;
 
 
    /* ================================
@@ -211,21 +233,6 @@
    --padding-capa-conteudo-inferior-projeto: 0.5rem;
 
    --largura-capa-projeto: 90%;
-
-
-   /* ================================
-       TIPOGRAFIA / ELEMENTOS
-    ================================ */
-
-   --tamanho-fonte-logo-projeto: 1.8125rem;
-   --tamanho-fonte-botao-projeto: 1rem;
-   --tamanho-fonte-rotulo-projeto: 0.875rem;
-   --tamanho-fonte-data-projeto: 1.5rem;
-   --tamanho-fonte-plataforma-projeto: 0.875rem;
-   --tamanho-fonte-titulo-historia-projeto: 3.5rem;
-   --tamanho-fonte-texto-historia-projeto: 1.25rem;
-   --tamanho-fonte-titulo-video-projeto: 3rem;
-   --tamanho-fonte-descricao-video-projeto: 1.125rem;
 
 
    /* ================================
@@ -253,6 +260,19 @@
 
 
    /* ================================
+       RODAPÉ
+    ================================ */
+
+   --padding-rodape-projeto: 5rem 0 2.5rem;
+
+   --gap-conteudo-rodape-projeto: 1.5rem;
+   --gap-links-rodape-projeto: 0.5rem 1.5rem;
+   --gap-redes-rodape-projeto: 1rem;
+
+   --tamanho-rede-social-projeto: 2.5rem;
+
+
+   /* ================================
        DIMENSÕES
     ================================ */
 
@@ -271,10 +291,35 @@
 
    --sombra-logo-projeto: 0 0 0.625rem rgba(255, 61, 139, 0.4);
    --sombra-botao-projeto: 0 0 1.75rem rgba(255, 61, 139, 0.65);
+   --sombra-logo-rodape-projeto: 0 0 0.9375rem rgba(255, 61, 139, 0.3);
 
    --cor-fundo-barra-projeto: rgba(13, 13, 26, 0.85);
    --cor-borda-barra-projeto: rgba(255, 255, 255, 0.5);
 
    --cor-gradiente-card-video-projeto: rgba(13, 13, 26, 0.9);
+
+   --transicao-menu-projeto: transform 0.3s ease;
+   --transicao-botao-projeto: all 0.3s ease;
+   --transicao-rede-social-projeto: all 0.3s;
+   --transicao-aparecer-projeto: all 1s ease-out;
+
+   --deslocamento-aparecer-projeto: 1.875rem;
+
+   --opacidade-capa-seta-projeto: 0.7;
+
+   --duracao-animacao-saltar-projeto: 2s;
+   --deslocamento-animacao-saltar-projeto: 0.5rem;
+
+
+   /* ================================
+       RESPONSIVIDADE
+    ================================ */
+
+   --breakpoint-projeto: 43.75rem;
+
+   --gap-capa-barra-mobile-projeto: 1rem;
+
+   --proporcao-card-video-mobile-projeto: 4 / 5;
+   --posicao-fundo-card-video-mobile-projeto: 30% center;
 
 }

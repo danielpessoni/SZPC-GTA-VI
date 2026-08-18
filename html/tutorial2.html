@@ -1,386 +1,57 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>GTA VI — o código e o comportamento, lado a lado</title>
-<style>
-  :root{
-    --noite:#0b0713;
-    --painel:#150e24;
-    --painel-2:#1c1330;
-    --linha:#2e2145;
-    --tinta:#f4effb;
-    --apagado:#9c8dbb;
-    --rosa:#ff3d8b;
-    --ciano:#35d6e7;
-    --creme:#f7e8c9;
-    --roxo:#a259ff;
-  }
-
-  *{box-sizing:border-box}
-  html{scroll-behavior:smooth}
-
-  body{
-    margin:0;
-    background:
-      radial-gradient(1200px 600px at 80% -10%, rgba(162,89,255,.18), transparent 60%),
-      radial-gradient(900px 500px at 0% 40%, rgba(255,61,139,.10), transparent 60%),
-      var(--noite);
-    color:var(--tinta);
-    font-family:"Inter","Segoe UI",system-ui,-apple-system,sans-serif;
-    -webkit-font-smoothing:antialiased;
-  }
-
-  .display{
-    font-family:"Anton","Impact","Haettenschweiler","Franklin Gothic Bold","Arial Narrow",sans-serif;
-    font-weight:400;letter-spacing:.02em;text-transform:uppercase;
-  }
-
-  /* ---------- barra fixa ---------- */
-  .barra{
-    position:sticky;top:0;z-index:50;
-    background:rgba(11,7,19,.86);backdrop-filter:blur(14px);
-    border-bottom:1px solid var(--linha);
-  }
-  .barra-interna{
-    max-width:1560px;margin:0 auto;padding:12px 24px;
-    display:flex;align-items:center;gap:20px;flex-wrap:wrap;
-  }
-  .marca{display:flex;align-items:center;gap:10px;margin-right:4px}
-  .marca-vi{
-    font-size:26px;line-height:1;
-    background:linear-gradient(180deg,var(--ciano),var(--rosa));
-    -webkit-background-clip:text;background-clip:text;color:transparent;
-  }
-  .marca-txt{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--apagado)}
-
-  .pills{display:flex;gap:6px;flex-wrap:wrap;flex:1}
-  .pill{
-    font:inherit;font-size:12.5px;padding:7px 12px;border-radius:999px;
-    border:1px solid var(--linha);background:transparent;color:var(--apagado);
-    cursor:pointer;transition:.18s;display:flex;align-items:center;gap:7px;
-  }
-  .pill b{font-size:11px;color:var(--rosa);font-variant-numeric:tabular-nums}
-  .pill:hover{border-color:var(--rosa);color:var(--tinta)}
-  .pill.ativo{background:var(--rosa);border-color:var(--rosa);color:#fff}
-  .pill.ativo b{color:rgba(255,255,255,.75)}
-
-  .chave{font-size:12px;color:var(--apagado);display:flex;align-items:center;gap:8px}
-  .tecla{
-    display:inline-block;min-width:20px;text-align:center;padding:2px 6px;
-    border:1px solid var(--linha);border-radius:5px;background:var(--painel);
-    color:var(--tinta);font-size:11px;
-  }
-  .btn-com{
-    font:inherit;font-size:12.5px;padding:7px 12px;border-radius:8px;
-    border:1px solid var(--linha);background:var(--painel);color:var(--apagado);cursor:pointer;transition:.18s;
-  }
-  .btn-com:hover{border-color:var(--ciano);color:var(--tinta)}
-  .btn-com.ativo{border-color:var(--ciano);color:var(--ciano)}
-
-  /* ---------- seções ---------- */
-  .secao{
-    max-width:1560px;margin:0 auto;padding:56px 24px;
-    border-top:1px solid var(--linha);scroll-margin-top:70px;
-  }
-  .secao:first-of-type{border-top:none;padding-top:44px}
-  .cabeca{display:flex;align-items:flex-start;gap:18px;margin-bottom:26px}
-  .num{
-    font-family:"Anton","Impact",sans-serif;font-size:52px;line-height:.8;color:transparent;
-    -webkit-text-stroke:1.5px var(--roxo);font-variant-numeric:tabular-nums;flex:none;
-  }
-  .cabeca h2{font-size:clamp(24px,3.2vw,38px);line-height:1;margin:0 0 8px;color:var(--creme)}
-  .cabeca .resumo{margin:0;color:var(--apagado);font-size:15.5px;line-height:1.6;max-width:70ch}
-
-  .dupla{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:22px;align-items:start}
-
-  /* ---------- painel de código ---------- */
-  .painel{background:var(--painel);border:1px solid var(--linha);border-radius:14px;overflow:hidden}
-  .painel + .painel{margin-top:12px}
-  .painel-topo{
-    display:flex;align-items:center;justify-content:space-between;gap:12px;
-    padding:10px 14px;border-bottom:1px solid var(--linha);background:var(--painel-2);
-  }
-  .painel-titulo{
-    font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--apagado);
-    display:flex;align-items:center;gap:8px;
-  }
-  .ponto{width:8px;height:8px;border-radius:50%;background:var(--rosa)}
-  .ponto.ciano{background:var(--ciano)}
-  .arquivo{font-size:11px;color:var(--apagado);font-family:ui-monospace,Menlo,Consolas,monospace}
-
-  pre.codigo{
-    margin:0;padding:18px 16px;overflow-x:auto;
-    font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;
-    font-size:13.5px;line-height:1.75;tab-size:2;color:#e6dcf7;
-  }
-  pre.codigo .tag{color:var(--rosa)}
-  pre.codigo .nome{color:#ff8ab8}
-  pre.codigo .atr{color:var(--ciano)}
-  pre.codigo .val{color:var(--creme)}
-  pre.codigo .com{color:#6f6291;font-style:italic}
-
-  /* ---------- painel da direita ---------- */
-  .quadro{
-    background:var(--painel);border:1px solid var(--linha);border-radius:14px;overflow:hidden;
-    position:sticky;top:78px;
-  }
-  .quadro-img{
-    padding:14px;background:
-      linear-gradient(180deg,rgba(255,61,139,.10),transparent 45%),
-      repeating-linear-gradient(45deg,rgba(255,255,255,.015) 0 8px,transparent 8px 16px);
-  }
-  .legenda{padding:12px 16px 16px;border-top:1px solid var(--linha);font-size:13.5px;color:var(--apagado);line-height:1.6}
-  .legenda b{color:var(--tinta);font-weight:600}
-  .legenda code{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12.5px;
-    background:rgba(53,214,231,.10);color:#9fe9f2;padding:1px 5px;border-radius:5px}
-
-  /* ---------- notas ---------- */
-  .notas{margin-top:20px;display:grid;gap:10px}
-  .nota{
-    display:flex;gap:12px;align-items:flex-start;
-    background:rgba(255,255,255,.025);border:1px solid var(--linha);border-left:3px solid var(--roxo);
-    border-radius:10px;padding:12px 14px;font-size:14.5px;line-height:1.6;color:#d9cfee;
-  }
-  .nota code{
-    font-family:ui-monospace,Menlo,Consolas,monospace;font-size:13px;
-    background:rgba(255,61,139,.13);color:#ff9cc4;padding:1px 6px;border-radius:5px;
-  }
-  .nota .chip{
-    flex:none;font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--ciano);
-    border:1px solid rgba(53,214,231,.35);border-radius:999px;padding:3px 9px;margin-top:2px;
-  }
-  .nota.alerta{border-left-color:var(--rosa);background:rgba(255,61,139,.05)}
-  .nota.alerta .chip{color:var(--rosa);border-color:rgba(255,61,139,.4)}
-
-  .tags-usadas{display:flex;gap:6px;flex-wrap:wrap;margin-top:18px}
-  .tag-chip{
-    font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;
-    border:1px solid var(--linha);border-radius:6px;padding:4px 8px;color:var(--apagado);
-  }
-  .tag-chip b{color:var(--creme);font-weight:400}
-
-  /* ---------- moldura das demos ---------- */
-  .demo{
-    border-radius:8px;overflow:hidden;background:#000;
-    border:1px solid rgba(255,255,255,.07);box-shadow:0 18px 50px rgba(0,0,0,.6);
-  }
-  .demo-corpo{padding:14px;background:#080510}
-  .demo code{
-    font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;
-    background:rgba(53,214,231,.10);color:#9fe9f2;padding:1px 5px;border-radius:5px;
-  }
-  .d-linha{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:12px}
-  .d-btn{
-    font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;padding:6px 11px;border-radius:7px;
-    border:1px solid var(--linha);background:var(--painel);color:var(--apagado);cursor:pointer;transition:.18s;
-  }
-  .d-btn:hover{border-color:var(--ciano);color:var(--tinta)}
-  .d-btn.on{border-color:var(--rosa);color:#fff;background:rgba(255,61,139,.18)}
-  .d-dica{font-size:11.5px;color:#6f6291}
-
-  /* ---------- réplica do projeto real ---------- */
-  .p-tela{
-    position:relative;height:330px;overflow:hidden;background:#000;
-    font-family:"Inter",system-ui,sans-serif;
-  }
-  .p-menu{
-    position:absolute;top:0;left:0;right:0;height:34px;z-index:10;
-    display:flex;align-items:center;padding:0 14px;
-    transition:transform .3s ease;
-  }
-  .p-menu span{
-    font-family:"Anton","Impact",sans-serif;font-size:17px;color:#fff;
-    letter-spacing:.04em;text-shadow:0 2px 12px rgba(0,0,0,.7);
-  }
-  .p-menu.menu-rolado{transform:translateY(-100%)}
-
-  .p-scroll{position:absolute;inset:0;overflow-y:auto;scrollbar-width:thin}
-
-  .p-capa{
-    position:relative;height:330px;
-    display:flex;flex-direction:column;align-items:center;justify-content:center;
-    background:radial-gradient(120% 90% at 50% 20%, #3b1a4a, #12060f 70%);
-  }
-  .p-video{
-    position:absolute;inset:0;z-index:1;opacity:0;pointer-events:none;
-    display:flex;align-items:center;justify-content:center;
-    background:#000;border:1px solid rgba(255,255,255,.10);
-  }
-  .p-video span{
-    font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12px;
-    letter-spacing:.34em;text-transform:uppercase;color:var(--creme);
-  }
-  .p-capa-conteudo{
-    position:relative;z-index:3;display:flex;flex-direction:column;align-items:center;gap:10px;
-    padding:0 14px;text-align:center;
-  }
-  .p-arte{width:min(210px,72%);height:auto;display:block;filter:drop-shadow(0 12px 30px rgba(0,0,0,.7))}
-  .p-arte-fallback{
-    font-family:"Anton","Impact",sans-serif;font-size:44px;line-height:1;color:#fff;
-    text-shadow:0 6px 24px rgba(0,0,0,.8);
-  }
-  .p-barra{
-    position:absolute;left:0;right:0;bottom:34px;z-index:3;
-    display:flex;align-items:center;justify-content:space-between;gap:10px;
-    padding:0 16px;font-size:9.5px;
-  }
-  .p-barra div{display:flex;flex-direction:column;gap:2px;min-width:78px}
-  .p-barra b{
-    font-weight:400;font-size:8px;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.55);
-  }
-  .p-barra i{font-style:normal;color:#fff;font-size:10px}
-  .p-botao{
-    background:#ff3d8b;color:#fff;border-radius:999px;padding:6px 14px;
-    font-size:10px;font-weight:600;white-space:nowrap;
-    display:inline-flex;align-items:center;gap:6px;text-decoration:none;
-  }
-  .p-botao img{width:9px;height:9px;display:block}
-  .p-seta{
-    position:absolute;bottom:10px;left:50%;transform:translateX(-50%);
-    width:14px;height:14px;z-index:3;opacity:.8;
-  }
-
-  .p-secao{padding:34px 16px;background:#070409}
-  .p-central{max-width:none}
-  .p-rotulo{
-    margin:0 0 4px;font-size:8px;letter-spacing:.2em;text-transform:uppercase;color:#ff3d8b;
-  }
-  .p-central h4{
-    margin:0 0 8px;font-family:"Anton","Impact",sans-serif;font-size:22px;line-height:1;
-    color:#f7e8c9;letter-spacing:.02em;text-transform:uppercase;font-weight:400;
-  }
-  .p-central p.txt{margin:0;font-size:10.5px;line-height:1.7;color:#9c8dbb}
-  .p-card{
-    border-radius:10px;padding:16px;
-    background:linear-gradient(140deg,rgba(255,61,139,.22),rgba(162,89,255,.14)),#100a1c;
-    border:1px solid rgba(255,255,255,.08);
-  }
-  .p-card .p-botao{margin-top:10px}
-  .p-rodape{
-    padding:18px 16px 26px;background:#050308;color:#5b4d78;font-size:9px;line-height:1.8;
-    border-top:1px solid rgba(255,255,255,.06);
-  }
-  .p-rodape b{
-    display:block;font-family:"Anton","Impact",sans-serif;font-size:14px;color:#8b7db0;
-    letter-spacing:.04em;margin-bottom:6px;font-weight:400;
-  }
-
-  /* estados que o JavaScript liga/desliga */
-  .modo-blocos .p-central{
-    opacity:0;transform:translateY(30px);
-    transition:opacity 1s ease-out, transform 1s ease-out;
-  }
-  .modo-blocos .p-central.visivel{opacity:1;transform:translateY(0)}
-
-  .p-hud{
-    position:absolute;right:8px;bottom:8px;z-index:20;
-    font-family:ui-monospace,Menlo,Consolas,monospace;font-size:10.5px;color:var(--apagado);
-    background:rgba(11,7,19,.88);border:1px solid var(--linha);border-radius:6px;padding:4px 8px;
-  }
-  .p-hud b{color:var(--ciano);font-weight:400}
-  .p-hud b.rosa{color:var(--rosa)}
-
-  .d-slider{width:100%;margin:14px 0 8px;accent-color:var(--rosa)}
-  .d-numeros{display:flex;gap:14px;flex-wrap:wrap;font-family:ui-monospace,monospace;font-size:11px;color:#6f6291}
-  .d-numeros b{color:var(--ciano);font-weight:400}
-  .d-numeros b.erro{color:var(--rosa)}
-
-  /* f5 */
-  .d-f5-tela{
-    height:150px;border:1px solid var(--linha);border-radius:8px;
-    background:linear-gradient(165deg,#1d1136,#0b0713 70%);
-    display:flex;align-items:center;justify-content:center;text-align:center;padding:14px;
-    font-size:12.5px;line-height:1.6;color:var(--apagado);
-  }
-  .d-f5-tela .titulo{
-    display:block;font-family:"Anton","Impact",sans-serif;font-size:20px;
-    letter-spacing:.02em;text-transform:uppercase;margin-bottom:6px;
-  }
-  .d-f5-tela.ruim{border-color:rgba(255,61,139,.5)}
-  .d-f5-tela.ruim .titulo{color:var(--rosa)}
-  .d-f5-tela.bom{border-color:rgba(53,214,231,.5)}
-  .d-f5-tela.bom .titulo{color:var(--ciano)}
-
-  /* mapa dos arquivos */
-  .d-arq{display:grid;gap:10px}
-  .d-arq-item{border:1px solid var(--linha);border-radius:10px;padding:11px 13px;background:rgba(255,255,255,.02)}
-  .d-arq-item h4{
-    margin:0 0 7px;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12.5px;color:var(--ciano);
-    font-weight:400;display:flex;align-items:center;gap:8px;
-  }
-  .d-arq-item h4 em{
-    font-style:normal;font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--apagado);
-    border:1px solid var(--linha);border-radius:999px;padding:2px 8px;
-  }
-  .d-arq-item ul{margin:0;padding-left:17px;color:var(--apagado);font-size:12.5px;line-height:1.7}
-  .d-arq-item ul b{color:var(--creme);font-weight:600}
-
-  /* ---------- fim ---------- */
-  .fim{
-    max-width:1560px;margin:0 auto;padding:60px 24px 100px;
-    border-top:1px solid var(--linha);color:var(--apagado);font-size:14px;
-  }
-  .fim h2{color:var(--creme);font-size:28px;margin:0 0 12px}
-  .fim p{max-width:70ch;line-height:1.7}
-  .fim code{
-    font-family:ui-monospace,Menlo,Consolas,monospace;font-size:13px;
-    background:rgba(255,61,139,.13);color:#ff9cc4;padding:1px 6px;border-radius:5px;
-  }
-
-  @media (max-width:1000px){
-    .dupla{grid-template-columns:1fr}
-    .quadro{position:static;order:-1}
-    .num{font-size:38px}
-  }
-  @media (prefers-reduced-motion:reduce){
-    html{scroll-behavior:auto}
-    *{transition:none!important}
-  }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GTA VI — o código e o comportamento, lado a lado</title>
+  <!-- Folha de estilos externa com aparência, layout e transições -->
+  <link rel="stylesheet" href="../src/css/tutorial2.css">
+  <link rel="stylesheet" href="../src/css/geral/variaveis.css">
+  <link rel="stylesheet" href="../src/css/geral/scroll.css">
 </head>
+
 <body>
 
-<div class="barra">
-  <div class="barra-interna">
-    <div class="marca">
-      <span class="display marca-vi">VI</span>
-      <span class="marca-txt">Código&nbsp;→&nbsp;Comportamento</span>
+  <!-- Barra Fixa Superior -->
+  <div class="barra">
+    <div class="barra-interna">
+      <div class="marca">
+        <span class="display marca-vi">VI</span>
+        <span class="marca-txt">Código&nbsp;→&nbsp;Comportamento</span>
+      </div>
+      <nav class="pills" id="pills">
+        <button class="pill ativo" data-alvo="menu"><b>01</b> Menu</button>
+        <button class="pill" data-alvo="blocos"><b>02</b> Blocos</button>
+        <button class="pill" data-alvo="video"><b>03</b> Vídeo</button>
+        <button class="pill" data-alvo="acabamento"><b>04</b> Acabamento</button>
+        <button class="pill" data-alvo="final"><b>05</b> script.js</button>
+      </nav>
+      <button class="btn-com ativo" id="toggleCom">Comentários: ligados</button>
+      <span class="chave"><span class="tecla">←</span><span class="tecla">→</span> navega</span>
     </div>
-    <nav class="pills" id="pills"></nav>
-    <button class="btn-com ativo" id="toggleCom">Comentários: ligados</button>
-    <span class="chave"><span class="tecla">←</span><span class="tecla">→</span> navega</span>
   </div>
-</div>
 
-<main id="secoes"></main>
+  <!-- Conteúdo Principal das Seções -->
+  <main id="secoes">
 
-<section class="fim">
-  <h2 class="display">É só isso</h2>
-  <p>Repara que nenhuma linha de hoje desenhou coisa alguma na tela. O JavaScript achou elementos, escutou eventos e trocou nomes de classe — o resto já estava no CSS, esperando esse nome chegar. É sempre a mesma receita: <code>achar</code> → <code>escutar</code> → <code>trocar</code>.</p>
-</section>
-
-<script>
-/* ---------------------------------------------------------------
-   Conteúdo da aula. Cada item = uma parte da Live 3, com o código
-   que a pessoa digita e a página real rodando ao lado.
----------------------------------------------------------------- */
-const BASE = "https://dev-em-dobro.github.io/szpc-gta-6/assets/";
-const ARTE  = BASE + "gta-box-art.jpeg";
-const SETA  = BASE + "seta-baixo.png";
-const PLAY  = BASE + "icone-play.png";
-const DURACAO = 5.04; // segundos do vídeo da capa
-
-const CONTEUDO = [
-  {
-    id:"menu",
-    curto:"Menu",
-    titulo:"O menu que some ao rolar",
-    resumo:"A barra do topo é transparente por cima do vídeo da capa. Assim que a pessoa rola, ela desliza pra cima e sai da tela; quando volta pro topo, ela volta deslizando.",
-    blocos:[
-      {arq:"script.js — parte 1", lang:"js", txt:
-`const menu = document.getElementById("menu");
+    <!-- SEÇÃO 01: O menu que some ao rolar -->
+    <section class="secao" id="menu">
+      <div class="cabeca">
+        <div class="num">01</div>
+        <div>
+          <h2 class="display">O menu que some ao rolar</h2>
+          <p class="resumo">A barra do topo é transparente por cima do vídeo da capa. Assim que a pessoa rola, ela desliza pra cima e sai da tela; quando volta pro topo, ela volta deslizando.</p>
+        </div>
+      </div>
+      <div class="dupla">
+        <div>
+          <div class="painel">
+            <div class="painel-topo">
+              <span class="painel-titulo"><span class="ponto"></span> O código</span>
+              <span class="arquivo">script.js — parte 1</span>
+            </div>
+            <pre class="codigo" data-lang="js"><code>const menu = document.getElementById("menu");
 
 window.addEventListener("scroll", function () {
   // depois dos primeiros 50px, o menu sai da tela.
@@ -390,47 +61,150 @@ window.addEventListener("scroll", function () {
   } else {
     menu.classList.remove("menu-rolado");
   }
-});`},
-      {arq:"style.css — o menu ganha 2 coisas", lang:"css", txt:
-`.menu {
+});</code></pre>
+          </div>
+
+          <div class="painel">
+            <div class="painel-topo">
+              <span class="painel-titulo"><span class="ponto"></span> O código</span>
+              <span class="arquivo">style.css — o menu ganha 2 coisas</span>
+            </div>
+            <pre class="codigo" data-lang="css"><code>.menu {
   /* ...tudo o que já estava aqui da Live 2... */
   transition: transform 0.3s ease;
 }
 
 .menu-rolado {
   transform: translateY(-100%);
-}`}
-    ],
-    chips:["document","getElementById","addEventListener","\"scroll\"","window.scrollY","if / else","classList","transition"],
-    notas:[
-      {chip:"ACHAR", txt:"<code>document</code> é a página inteira, vista por dentro pelo JavaScript. <code>getElementById(\"menu\")</code> procura <b>um</b> elemento pelo <code>id</code> que ele tem lá no HTML — aquele <code>&lt;nav class=\"menu\" id=\"menu\"&gt;</code> da Live 1. O <code>const</code> guarda o achado numa caixinha pra não precisar procurar de novo."},
-      {chip:"ESCUTAR", txt:"<code>addEventListener</code> é “fica de olho e me avisa”. O primeiro pedaço é <b>o quê</b> (<code>\"scroll\"</code>), o segundo é <b>o que fazer</b> quando acontecer. Essa função entre parênteses roda dezenas de vezes por segundo enquanto a pessoa rola."},
-      {chip:"scrollY", txt:"<code>window</code> é a janela do navegador. <code>window.scrollY</code> é quanto a pessoa já rolou, em pixels — no topo vale <code>0</code>. Põe um <code>console.log(window.scrollY)</code> lá dentro, abre o Console (F12) e rola: dá pra ver o número correndo."},
-      {chip:"if / else", txt:"<code>if</code> é “se”. <code>else</code> é “senão”. Os dois são obrigatórios aqui: só com o <code>if</code>, o menu sai da tela e <b>nunca mais volta</b>, porque ninguém manda remover a classe."},
-      {chip:"transition", txt:"<code>translateY(-100%)</code> significa “sobe a sua própria altura”, ou seja, some pra cima. Quem faz isso ser suave é o <code>transition: transform 0.3s ease</code> no <code>.menu</code> — sem ele o menu some de um frame pro outro."},
-      {chip:"Atenção", txt:"Nada disso funciona se o <code>&lt;script&gt;</code> não estiver no <b>fim</b> do <code>&lt;body&gt;</code>. O navegador lê a página de cima pra baixo: se o script rodar antes, o <code>&lt;nav id=\"menu\"&gt;</code> ainda não existe e o <code>getElementById</code> devolve <code>null</code>."}
-    ],
-    demo:"menu",
-    legenda:"<b>É a página de verdade aqui do lado — rola dentro dela.</b> O contador mostra o <code>scrollY</code> e o momento exato em que ele passa de 50: é ali que a classe <code>menu-rolado</code> entra e sai."
-  },
+}</code></pre>
+          </div>
 
-  {
-    id:"blocos",
-    curto:"Blocos",
-    titulo:"Os blocos que aparecem subindo",
-    resumo:"Os textos das seções começam invisíveis e um pouquinho pra baixo. Quando entram na tela, sobem com fade. Quem avisa que eles entraram é o IntersectionObserver.",
-    blocos:[
-      {arq:"index.html — a classe entra em 2 lugares", lang:"html", txt:
-`<!-- sempre na <div> de dentro, nunca na <section> e nunca no rodapé -->
-<section class="secao-historia">
-  <div class="conteudo-central aparecer"> ... </div>
-</section>
+          <div class="tags-usadas">
+            <span class="tag-chip"><b>document</b></span>
+            <span class="tag-chip"><b>getElementById</b></span>
+            <span class="tag-chip"><b>addEventListener</b></span>
+            <span class="tag-chip"><b>&quot;scroll&quot;</b></span>
+            <span class="tag-chip"><b>window.scrollY</b></span>
+            <span class="tag-chip"><b>if / else</b></span>
+            <span class="tag-chip"><b>classList</b></span>
+            <span class="tag-chip"><b>transition</b></span>
+          </div>
 
-<section class="secao-video">
-  <div class="conteudo-central aparecer"> ... </div>
-</section>`},
-      {arq:"script.js — parte 2", lang:"js", txt:
-`const blocos = document.querySelectorAll(".aparecer");
+          <div class="notas">
+            <div class="nota">
+              <span class="chip">ACHAR</span>
+              <div><code>document</code> é a página inteira, vista por dentro pelo JavaScript. <code>getElementById(&quot;menu&quot;)</code> procura <b>um</b> elemento pelo <code>id</code> que ele tem lá no HTML — aquele <code>&lt;nav class=&quot;menu&quot; id=&quot;menu&quot;&gt;</code> da Live 1. O <code>const</code> guarda o achado numa caixinha pra não precisar procurar de novo.</div>
+            </div>
+            <div class="nota">
+              <span class="chip">ESCUTAR</span>
+              <div><code>addEventListener</code> é “fica de olho e me avisa”. O primeiro pedaço é <b>o quê</b> (<code>&quot;scroll&quot;</code>), o segundo é <b>o que fazer</b> quando acontecer. Essa função entre parênteses roda dezenas de vezes por segundo enquanto a pessoa rola.</div>
+            </div>
+            <div class="nota">
+              <span class="chip">scrollY</span>
+              <div><code>window</code> é a janela do navegador. <code>window.scrollY</code> é quanto a pessoa já rolou, em pixels — no topo vale <code>0</code>. Põe um <code>console.log(window.scrollY)</code> lá dentro, abre o Console (F12) e rola: dá pra ver o número correndo.</div>
+            </div>
+            <div class="nota">
+              <span class="chip">if / else</span>
+              <div><code>if</code> é “se”. <code>else</code> é “senão”. Os dois são obrigatórios aqui: só com o <code>if</code>, o menu sai da tela e <b>nunca mais volta</b>, porque ninguém manda remover a classe.</div>
+            </div>
+            <div class="nota">
+              <span class="chip">transition</span>
+              <div><code>translateY(-100%)</code> significa “sobe a sua própria altura”, ou seja, some pra cima. Quem faz isso ser suave é o <code>transition: transform 0.3s ease</code> no <code>.menu</code> — sem ele o menu some de um frame pro outro.</div>
+            </div>
+            <div class="nota alerta">
+              <span class="chip">Atenção</span>
+              <div>Nada disso funciona se o <code>&lt;script&gt;</code> não estiver no <b>fim</b> do <code>&lt;body&gt;</code>. O navegador lê a página de cima pra baixo: se o script rodar antes, o <code>&lt;nav id=&quot;menu&quot;&gt;</code> ainda não existe e o <code>getElementById</code> devolve <code>null</code>.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="quadro">
+          <div class="painel-topo">
+            <span class="painel-titulo"><span class="ponto ciano"></span> Rodando</span>
+            <span class="arquivo">parte 01 de 05</span>
+          </div>
+          <div class="quadro-img" data-demo="menu">
+            <div class="demo">
+              <div class="p-tela modo-menu">
+                <div class="p-menu"><span>VI</span></div>
+                <div class="p-scroll">
+                  <header class="p-capa">
+                    <div class="p-capa-conteudo">
+                      <img class="p-arte" src="../src/assets/assets-projeto/gta-box-art.jpeg" alt="Grand Theft Auto VI">
+                    </div>
+                    <div class="p-barra">
+                      <div><b>Lançamento</b><i>19 de Novembro de 2026</i></div>
+                      <a class="p-botao">Reserve agora</a>
+                      <div><b>Disponível em</b><i>PS5 · Xbox Series X|S</i></div>
+                    </div>
+                    <img class="p-seta" src="../src/assets/assets-projeto/seta-baixo.png" alt="Seta para Baixo">
+                  </header>
+
+                  <section class="p-secao">
+                    <div class="p-central">
+                      <p class="p-rotulo">História</p>
+                      <h4>Vice City, EUA.</h4>
+                      <p class="txt">Jason e Lucia sempre souberam que tudo estava contra eles. Mas, depois que um serviço simples dá errado, eles vão do lado mais sombrio ao lugar mais ensolarado dos Estados Unidos, em meio a uma conspiração criminosa se estendendo por toda a Leonida.</p>
+                    </div>
+                  </section>
+
+                  <section class="p-secao">
+                    <div class="p-central">
+                      <div class="p-card">
+                        <p class="p-rotulo">Vídeos</p>
+                        <h4>2º Trailer</h4>
+                        <p class="txt">A maior e mais imersiva evolução da série Grand Theft Auto até o momento.</p>
+                        <a class="p-botao"><img src="../src/assets/assets-projeto/icone-play.png" alt="Ícone Play"> Ver agora</a>
+                      </div>
+                    </div>
+                  </section>
+
+                  <footer class="p-rodape">
+                    <b>GTA VI</b>
+                    Corporativo · Privacidade · Jurídico<br>© 2026 Rockstar Games, Inc.
+                  </footer>
+                </div>
+                <div class="p-hud">window.scrollY = <b class="v">0</b> · <b class="c">sem classe</b></div>
+              </div>
+            </div>
+          </div>
+          <p class="legenda"><b>É a página de verdade aqui do lado — rola dentro dela.</b> O contador mostra o <code>scrollY</code> e o momento exato em que ele passa de 50: é ali que a classe <code>menu-rolado</code> entra e sai.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SEÇÃO 02: Os blocos que aparecem subindo -->
+    <section class="secao" id="blocos">
+      <div class="cabeca">
+        <div class="num">02</div>
+        <div>
+          <h2 class="display">Os blocos que aparecem subindo</h2>
+          <p class="resumo">Os textos das seções começam invisíveis e um pouquinho pra baixo. Quando entram na tela, sobem com fade. Quem avisa que eles entraram é o IntersectionObserver.</p>
+        </div>
+      </div>
+      <div class="dupla">
+        <div>
+          <div class="painel">
+            <div class="painel-topo">
+              <span class="painel-titulo"><span class="ponto"></span> O código</span>
+              <span class="arquivo">index.html — a classe entra em 2 lugares</span>
+            </div>
+            <pre class="codigo" data-lang="html"><code>&lt;!-- sempre na &lt;div&gt; de dentro, nunca na &lt;section&gt; e nunca no rodapé --&gt;
+&lt;section class="secao-historia"&gt;
+  &lt;div class="conteudo-central aparecer"&gt; ... &lt;/div&gt;
+&lt;/section&gt;
+
+&lt;section class="secao-video"&gt;
+  &lt;div class="conteudo-central aparecer"&gt; ... &lt;/div&gt;
+&lt;/section&gt;</code></pre>
+          </div>
+
+          <div class="painel">
+            <div class="painel-topo">
+              <span class="painel-titulo"><span class="ponto"></span> O código</span>
+              <span class="arquivo">script.js — parte 2</span>
+            </div>
+            <pre class="codigo" data-lang="js"><code>const blocos = document.querySelectorAll(".aparecer");
 
 const observador = new IntersectionObserver(function (entradas) {
   entradas.forEach(function (entrada) {
@@ -444,9 +218,15 @@ const observador = new IntersectionObserver(function (entradas) {
 // manda o observador vigiar cada um dos blocos da lista
 blocos.forEach(function (bloco) {
   observador.observe(bloco);
-});`},
-      {arq:"style.css — o antes e o depois", lang:"css", txt:
-`.aparecer {
+});</code></pre>
+          </div>
+
+          <div class="painel">
+            <div class="painel-topo">
+              <span class="painel-titulo"><span class="ponto"></span> O código</span>
+              <span class="arquivo">style.css — o antes e o depois</span>
+            </div>
+            <pre class="codigo" data-lang="css"><code>.aparecer {
   opacity: 0;
   transform: translateY(30px);
   transition: opacity 1s ease-out, transform 1s ease-out;
@@ -455,28 +235,118 @@ blocos.forEach(function (bloco) {
 .aparecer.visivel {
   opacity: 1;
   transform: translateY(0);
-}`}
-    ],
-    chips:["querySelectorAll","IntersectionObserver","forEach","isIntersecting","unobserve","threshold"],
-    notas:[
-      {chip:"um × todos", txt:"<code>getElementById</code> traz <b>um</b> elemento. <code>querySelectorAll(\".aparecer\")</code> traz <b>todos</b> que têm aquela classe — vem uma lista. Por isso precisa do <code>forEach</code>: pra falar com cada um, um de cada vez."},
-      {chip:"observador", txt:"<code>IntersectionObserver</code> é um vigia que o próprio navegador oferece: você entrega elementos pra ele e ele avisa quando eles entram ou saem da tela. Cada aviso vem como uma <code>entrada</code>, e <code>entrada.isIntersecting</code> responde “está aparecendo agora?”."},
-      {chip:"unobserve", txt:"<code>unobserve</code> é “pode parar de vigiar esse aqui”. Sem ele nada quebra — mas o observador continua trabalhando à toa pra sempre, num bloco que já apareceu e não vai voltar atrás."},
-      {chip:"threshold", txt:"<code>threshold: 0.15</code> quer dizer “me avisa quando 15% do bloco estiver visível”. Com <code>0</code> avisa no primeiro pixelzinho; com <code>1</code> só quando o bloco inteiro couber na tela."},
-      {chip:"Atenção", txt:"A classe <code>aparecer</code> vai na <code>&lt;div class=\"conteudo-central\"&gt;</code> de dentro, e em <b>exatamente 2 lugares</b>. Na <code>&lt;section&gt;</code> não funciona bem: ela ocupa a tela toda, “entra na tela” cedo demais e a animação dispara antes de a pessoa chegar no texto."}
-    ],
-    demo:"blocos",
-    legenda:"<b>Rola devagar e observa o momento do disparo.</b> Cada bloco anima uma vez só: sobe, aparece e o observador larga ele. Rola de volta pra cima — ele fica lá, quietinho."
-  },
+}</code></pre>
+          </div>
 
-  {
-    id:"video",
-    curto:"Vídeo",
-    titulo:"O vídeo da capa que anda com o scroll",
-    resumo:"A capa fica presa na tela, o conteúdo dela some, o vídeo aparece por trás e o tempo do vídeo passa a ser controlado pelo dedo da pessoa. Aqui entra a primeira biblioteca da nossa vida: o GSAP.",
-    blocos:[
-      {arq:"script.js — parte 3", lang:"js", txt:
-`gsap.registerPlugin(ScrollTrigger);
+          <div class="tags-usadas">
+            <span class="tag-chip"><b>querySelectorAll</b></span>
+            <span class="tag-chip"><b>IntersectionObserver</b></span>
+            <span class="tag-chip"><b>forEach</b></span>
+            <span class="tag-chip"><b>isIntersecting</b></span>
+            <span class="tag-chip"><b>unobserve</b></span>
+            <span class="tag-chip"><b>threshold</b></span>
+          </div>
+
+          <div class="notas">
+            <div class="nota">
+              <span class="chip">um × todos</span>
+              <div><code>getElementById</code> traz <b>um</b> elemento. <code>querySelectorAll(&quot;.aparecer&quot;)</code> traz <b>todos</b> que têm aquela classe — vem uma lista. Por isso precisa do <code>forEach</code>: pra falar com cada um, um de cada vez.</div>
+            </div>
+            <div class="nota">
+              <span class="chip">observador</span>
+              <div><code>IntersectionObserver</code> é um vigia que o próprio navegador oferece: você entrega elementos pra ele e ele avisa quando eles entram ou saem da tela. Cada aviso vem como uma <code>entrada</code>, e <code>entrada.isIntersecting</code> responde “está aparecendo agora?”.</div>
+            </div>
+            <div class="nota">
+              <span class="chip">unobserve</span>
+              <div><code>unobserve</code> é “pode parar de vigiar esse aqui”. Sem ele nada quebra — mas o observador continua trabalhando à toa pra sempre, num bloco que já apareceu e não vai voltar atrás.</div>
+            </div>
+            <div class="nota">
+              <span class="chip">threshold</span>
+              <div><code>threshold: 0.15</code> quer dizer “me avisa quando 15% do bloco estiver visível”. Com <code>0</code> avisa no primeiro pixelzinho; com <code>1</code> só quando o bloco inteiro couber na tela.</div>
+            </div>
+            <div class="nota alerta">
+              <span class="chip">Atenção</span>
+              <div>A classe <code>aparecer</code> vai na <code>&lt;div class=&quot;conteudo-central&quot;&gt;</code> de dentro, e em <b>exatamente 2 lugares</b>. Na <code>&lt;section&gt;</code> não funciona bem: ela ocupa a tela toda, “entra na tela” cedo demais e a animação dispara antes de a pessoa chegar no texto.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="quadro">
+          <div class="painel-topo">
+            <span class="painel-titulo"><span class="ponto ciano"></span> Rodando</span>
+            <span class="arquivo">parte 02 de 05</span>
+          </div>
+          <div class="quadro-img" data-demo="blocos">
+            <div class="demo">
+              <div class="p-tela modo-blocos">
+                <div class="p-menu"><span>VI</span></div>
+                <div class="p-scroll">
+                  <header class="p-capa">
+                    <div class="p-capa-conteudo">
+                      <img class="p-arte" src="../src/assets/assets-projeto/gta-box-art.jpeg" alt="Grand Theft Auto VI">
+                    </div>
+                    <div class="p-barra">
+                      <div><b>Lançamento</b><i>19 de Novembro de 2026</i></div>
+                      <a class="p-botao">Reserve agora</a>
+                      <div><b>Disponível em</b><i>PS5 · Xbox Series X|S</i></div>
+                    </div>
+                    <img class="p-seta" src="../src/assets/assets-projeto/seta-baixo.png  " alt="Seta para Baixo">
+                  </header>
+
+                  <section class="p-secao">
+                    <div class="p-central">
+                      <p class="p-rotulo">História</p>
+                      <h4>Vice City, EUA.</h4>
+                      <p class="txt">Jason e Lucia sempre souberam que tudo estava contra eles. Mas, depois que um serviço simples dá errado, eles vão do lado mais sombrio ao lugar mais ensolarado dos Estados Unidos, em meio a uma conspiração criminosa se estendendo por toda a Leonida.</p>
+                    </div>
+                  </section>
+
+                  <section class="p-secao">
+                    <div class="p-central">
+                      <div class="p-card">
+                        <p class="p-rotulo">Vídeos</p>
+                        <h4>2º Trailer</h4>
+                        <p class="txt">A maior e mais imersiva evolução da série Grand Theft Auto até o momento.</p>
+                        <a class="p-botao"><img src="../src/assets/assets-projeto/icone-play.png" alt="Ícone Play"> Ver agora</a>
+                      </div>
+                    </div>
+                  </section>
+
+                  <footer class="p-rodape">
+                    <b>GTA VI</b>
+                    Corporativo · Privacidade · Jurídico<br>© 2026 Rockstar Games, Inc.
+                  </footer>
+                </div>
+                <div class="p-hud"><b class="v">0</b> de 2 já apareceram</div>
+              </div>
+            </div>
+            <div class="d-linha">
+              <button class="d-btn" data-acao="reiniciar">reiniciar</button>
+              <span class="d-dica">cada bloco anima uma vez só — é o <code>unobserve</code></span>
+            </div>
+          </div>
+          <p class="legenda"><b>Rola devagar e observa o momento do disparo.</b> Cada bloco anima uma vez só: sobe, aparece e o observador larga ele. Rola de volta pra cima — ele fica lá, quietinho.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SEÇÃO 03: O vídeo da capa que anda com o scroll -->
+    <section class="secao" id="video">
+      <div class="cabeca">
+        <div class="num">03</div>
+        <div>
+          <h2 class="display">O vídeo da capa que anda com o scroll</h2>
+          <p class="resumo">A capa fica presa na tela, o conteúdo dela some, o vídeo aparece por trás e o tempo do vídeo passa a ser controlado pelo dedo da pessoa. Aqui entra a primeira biblioteca da nossa vida: o GSAP.</p>
+        </div>
+      </div>
+      <div class="dupla">
+        <div>
+          <div class="painel">
+            <div class="painel-topo">
+              <span class="painel-titulo"><span class="ponto"></span> O código</span>
+              <span class="arquivo">script.js — parte 3</span>
+            </div>
+            <pre class="codigo" data-lang="js"><code>gsap.registerPlugin(ScrollTrigger);
 
 const video = document.querySelector(".capa-video");
 
@@ -511,9 +381,15 @@ if (video.readyState >= 1) {
   animarCapa();
 } else {
   video.addEventListener("loadedmetadata", animarCapa);
-}`},
-      {arq:"style.css — a regra do vídeo é TROCADA", lang:"css", txt:
-`/* apaga a regra .capa-video da Live 2 inteira e põe esta no lugar */
+}</code></pre>
+          </div>
+
+          <div class="painel">
+            <div class="painel-topo">
+              <span class="painel-titulo"><span class="ponto"></span> O código</span>
+              <span class="arquivo">style.css — a regra do vídeo é TROCADA</span>
+            </div>
+            <pre class="codigo" data-lang="css"><code>/* apaga a regra .capa-video da Live 2 inteira e põe esta no lugar */
 .capa-video {
   position: absolute;
   inset: 0;
@@ -530,54 +406,178 @@ if (video.readyState >= 1) {
   /* ...o que já estava... */
   position: relative;
   z-index: 3;
-}`}
-    ],
-    chips:["gsap.registerPlugin","querySelector","function","gsap.timeline","scrollTrigger","scrub","pin","currentTime","loadedmetadata"],
-    notas:[
-      {chip:"Biblioteca", txt:"Biblioteca é código pronto que alguém escreveu, testou e liberou pro mundo. O GSAP faz animação. Você não “instala” nada: cola duas tags <code>&lt;script&gt;</code> de CDN no HTML e as palavras <code>gsap</code> e <code>ScrollTrigger</code> passam a existir dentro do nosso arquivo."},
-      {chip:"function", txt:"<code>function animarCapa() { ... }</code> é uma receita guardada com nome. Escrever a receita <b>não executa</b> nada — ela só roda quando alguém chama <code>animarCapa()</code>. Aqui ela é chamada num de dois momentos possíveis, lá embaixo."},
-      {chip:"scrub / pin", txt:"<code>pin: true</code> prega a capa na tela enquanto a cena roda. <code>scrub: 1</code> amarra a animação ao scroll, com 1 segundo de atraso macio. E <code>ease: \"none\"</code> faz o vídeo andar na mesma velocidade do dedo — sem isso ele acelera e freia sozinho."},
-      {chip:"Armadilha", txt:"<b><code>display: none</code> × <code>opacity: 0</code>.</b> O <code>.capa-video</code> estava com <code>display: none</code> desde a Live 2. <code>display: none</code> não é invisível, é <b>inexistente</b>: o GSAP anima a opacidade dele e não acontece <b>nada</b> na tela — e sem nenhum erro no console pra te dar pista. Por isso a regra é trocada, não complementada."},
-      {chip:"Armadilha", txt:"<b><code>video.duration</code> vem <code>NaN</code></b> se o código rodar antes de o navegador ler o arquivo (<code>NaN</code> = “isso não é um número”). Daí o <code>if (video.readyState >= 1) ... else loadedmetadata</code>: o <code>if</code> cobre o F5 com o vídeo em cache, o <code>else</code> cobre o primeiro acesso."}
-    ],
-    demo:"scrub",
-    legenda:"<b>Arrasta a barrinha: ela faz o papel do scroll.</b> Nos primeiros 10% o conteúdo da capa some e encolhe, o vídeo aparece por trás e o <code>currentTime</code> anda junto com o dedo. Aqui o vídeo está representado por um bloco preto — na página real é o arquivo <code>.mp4</code> da capa."
-  },
+}</code></pre>
+          </div>
 
-  {
-    id:"acabamento",
-    curto:"Acabamento",
-    titulo:"O acabamento: a memória de scroll",
-    resumo:"Faltam duas linhas no começo do arquivo. Sem elas, quem der F5 no meio da cena da capa cai numa página quebrada — e é o tipo de bug que só aparece depois que tudo já estava funcionando.",
-    blocos:[
-      {arq:"script.js — as duas primeiras linhas", lang:"js", txt:
-`/* ============================================================
+          <div class="tags-usadas">
+            <span class="tag-chip"><b>gsap.registerPlugin</b></span>
+            <span class="tag-chip"><b>querySelector</b></span>
+            <span class="tag-chip"><b>function</b></span>
+            <span class="tag-chip"><b>gsap.timeline</b></span>
+            <span class="tag-chip"><b>scrollTrigger</b></span>
+            <span class="tag-chip"><b>scrub</b></span>
+            <span class="tag-chip"><b>pin</b></span>
+            <span class="tag-chip"><b>currentTime</b></span>
+            <span class="tag-chip"><b>loadedmetadata</b></span>
+          </div>
+
+          <div class="notas">
+            <div class="nota">
+              <span class="chip">Biblioteca</span>
+              <div>Biblioteca é código pronto que alguém escreveu, testou e liberou pro mundo. O GSAP faz animação. Você não “instala” nada: cola duas tags <code>&lt;script&gt;</code> de CDN no HTML e as palavras <code>gsap</code> e <code>ScrollTrigger</code> passam a existir dentro do nosso arquivo.</div>
+            </div>
+            <div class="nota">
+              <span class="chip">function</span>
+              <div><code>function animarCapa() { ... }</code> é uma receita guardada com nome. Escrever a receita <b>não executa</b> nada — ela só roda quando alguém chama <code>animarCapa()</code>. Aqui ela é chamada num de dois momentos possíveis, lá embaixo.</div>
+            </div>
+            <div class="nota">
+              <span class="chip">scrub / pin</span>
+              <div><code>pin: true</code> prega a capa na tela enquanto a cena roda. <code>scrub: 1</code> amarra a animação ao scroll, com 1 segundo de atraso macio. E <code>ease: &quot;none&quot;</code> faz o vídeo andar na mesma velocidade do dedo — sem isso ele acelera e freia sozinho.</div>
+            </div>
+            <div class="nota alerta">
+              <span class="chip">Armadilha</span>
+              <div><b><code>display: none</code> × <code>opacity: 0</code>.</b> O <code>.capa-video</code> estava com <code>display: none</code> desde a Live 2. <code>display: none</code> não é invisível, é <b>inexistente</b>: o GSAP anima a opacidade dele e não acontece <b>nada</b> na tela — e sem nenhum erro no console pra te dar pista. Por isso a regra é trocada, não complementada.</div>
+            </div>
+            <div class="nota alerta">
+              <span class="chip">Armadilha</span>
+              <div><b><code>video.duration</code> vem <code>NaN</code></b> se o código rodar antes de o navegador ler o arquivo (<code>NaN</code> = “isso não é um número”). Daí o <code>if (video.readyState &gt;= 1) ... else loadedmetadata</code>: o <code>if</code> cobre o F5 com o vídeo em cache, o <code>else</code> cobre o primeiro acesso.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="quadro">
+          <div class="painel-topo">
+            <span class="painel-titulo"><span class="ponto ciano"></span> Rodando</span>
+            <span class="arquivo">parte 03 de 05</span>
+          </div>
+          <div class="quadro-img" data-demo="scrub">
+            <div class="demo">
+              <div class="p-tela modo-capa">
+                <div class="p-menu"><span>VI</span></div>
+                <header class="p-capa">
+                  <div class="p-video"><span>vídeo</span></div>
+                  <div class="p-capa-conteudo">
+                    <img class="p-arte" src="../src/assets/assets-projeto/gta-box-art.jpeg" alt="Grand Theft Auto VI">
+                  </div>
+                  <div class="p-barra">
+                    <div><b>Lançamento</b><i>19 de Novembro de 2026</i></div>
+                    <a class="p-botao">Reserve agora</a>
+                    <div><b>Disponível em</b><i>PS5 · Xbox Series X|S</i></div>
+                  </div>
+                  <img class="p-seta" src="../src/assets/assets-projeto/seta-baixo.png" alt="Seta para Baixo">
+                </header>
+              </div>
+            </div>
+            <div class="demo-corpo d-scrub-corpo">
+              <input type="range" class="d-slider" min="0" max="100" value="0" step="0.5">
+              <div class="d-numeros">
+                <span>scroll: <b class="p">0</b>%</span>
+                <span>opacidade do vídeo: <b class="ov">0.00</b></span>
+                <span>currentTime: <b class="ct">0.00</b>s de 5.04s</span>
+              </div>
+            </div>
+          </div>
+          <p class="legenda"><b>Arrasta a barrinha: ela faz o papel do scroll.</b> Nos primeiros 10% o conteúdo da capa some e encolhe, o vídeo aparece por trás e o <code>currentTime</code> anda junto com o dedo. Aqui o vídeo está representado por um bloco preto — na página real é o arquivo <code>.mp4</code> da capa.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SEÇÃO 04: O acabamento: a memória de scroll -->
+    <section class="secao" id="acabamento">
+      <div class="cabeca">
+        <div class="num">04</div>
+        <div>
+          <h2 class="display">O acabamento: a memória de scroll</h2>
+          <p class="resumo">Faltam duas linhas no começo do arquivo. Sem elas, quem der F5 no meio da cena da capa cai numa página quebrada — e é o tipo de bug que só aparece depois que tudo já estava funcionando.</p>
+        </div>
+      </div>
+      <div class="dupla">
+        <div>
+          <div class="painel">
+            <div class="painel-topo">
+              <span class="painel-titulo"><span class="ponto"></span> O código</span>
+              <span class="arquivo">script.js — as duas primeiras linhas</span>
+            </div>
+            <pre class="codigo" data-lang="js"><code>/* ============================================================
    GTA VI — COMPORTAMENTO DA PÁGINA (JavaScript)
    ============================================================ */
 
 // Sempre começar a página no topo (o pin da capa depende disso).
 // O ScrollTrigger tem a memória DELE, separada da do navegador — limpa as duas.
 ScrollTrigger.clearScrollMemory("manual");
-window.scrollTo(0, 0);`}
-    ],
-    chips:["ScrollTrigger.clearScrollMemory","window.scrollTo"],
-    notas:[
-      {chip:"Armadilha", txt:"<b>A memória de scroll é dupla.</b> Mandar só <code>history.scrollRestoration = \"manual\"</code> <b>não resolve</b>: o ScrollTrigger guarda a posição dele por conta própria e sobrescreve a configuração do navegador. Quem resolve é <code>ScrollTrigger.clearScrollMemory(\"manual\")</code>."},
-      {chip:"Ordem", txt:"Essas linhas ficam no <b>começo</b> do arquivo, antes de tudo. O <code>pin</code> da capa calcula as posições a partir de onde a página começou — se ela começar no meio, a conta sai errada e os blocos ficam sobrepostos."},
-      {chip:"Repara", txt:"Esse bug não aparece enquanto você está construindo, porque você entra na página sempre pelo topo. Ele aparece na primeira vez que você dá F5 no meio do teste — normalmente ao vivo, na frente de todo mundo."}
-    ],
-    demo:"f5",
-    legenda:"<b>Aperta os dois botões e compara.</b> O navegador é gentil: ele tenta te devolver onde você parou. Numa página com <code>pin</code>, essa gentileza é justamente o problema."
-  },
+window.scrollTo(0, 0);</code></pre>
+          </div>
 
-  {
-    id:"final",
-    curto:"script.js",
-    titulo:"O arquivo inteiro, do começo ao fim",
-    resumo:"Tudo o que foi digitado hoje, em ordem, num arquivo só. Três blocos, uma funcionalidade cada — mais as duas linhas de acabamento lá em cima.",
-    blocos:[
-      {arq:"script.js — completo", lang:"js", txt:
-`/* ============================================================
+          <div class="tags-usadas">
+            <span class="tag-chip"><b>ScrollTrigger.clearScrollMemory</b></span>
+            <span class="tag-chip"><b>window.scrollTo</b></span>
+          </div>
+
+          <div class="notas">
+            <div class="nota alerta">
+              <span class="chip">Armadilha</span>
+              <div><b>A memória de scroll é dupla.</b> Mandar só <code>history.scrollRestoration = &quot;manual&quot;</code> <b>não resolve</b>: o ScrollTrigger guarda a posição dele por conta própria e sobrescreve a configuração do navegador. Quem resolve é <code>ScrollTrigger.clearScrollMemory(&quot;manual&quot;)</code>.</div>
+            </div>
+            <div class="nota">
+              <span class="chip">Ordem</span>
+              <div>Essas linhas ficam no <b>começo</b> do arquivo, antes de tudo. O <code>pin</code> da capa calcula as posições a partir de onde a página começou — se ela começar no meio, a conta sai errada e os blocos ficam sobrepostos.</div>
+            </div>
+            <div class="nota">
+              <span class="chip">Repara</span>
+              <div>Esse bug não aparece enquanto você está construindo, porque você entra na página sempre pelo topo. Ele aparece na primeira vez que você dá F5 no meio do teste — normalmente ao vivo, na frente de todo mundo.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="quadro">
+          <div class="painel-topo">
+            <span class="painel-titulo"><span class="ponto ciano"></span> Rodando</span>
+            <span class="arquivo">parte 04 de 05</span>
+          </div>
+          <div class="quadro-img" data-demo="f5">
+            <div class="demo-corpo d-f5-corpo">
+              <div class="d-linha d-f5-botoes">
+                <button class="d-btn" data-f5="sem">F5 sem clearScrollMemory</button>
+                <button class="d-btn on" data-f5="com">F5 com clearScrollMemory</button>
+              </div>
+              <div class="d-f5">
+                <div class="d-f5-tela bom" data-f5-tela="com">
+                  <div>
+                    <span class="titulo">Capa inteira, do topo</span>
+                    A página recomeçou em <code>scrollY = 0</code>. O <code>pin</code> calcula as posições certas e a cena roda inteira.
+                  </div>
+                </div>
+                <div class="d-f5-tela ruim" data-f5-tela="sem">
+                  <div>
+                    <span class="titulo">Cena quebrada</span>
+                    A página voltou em <code>scrollY = 1840</code>, no meio do pin. A capa aparece sobreposta ao texto e o vídeo trava num frame do meio.
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <p class="legenda"><b>Aperta os dois botões e compara.</b> O navegador é gentil: ele tenta te devolver onde você parou. Numa página com <code>pin</code>, essa gentileza é justamente o problema.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SEÇÃO 05: O arquivo inteiro, do começo ao fim -->
+    <section class="secao" id="final">
+      <div class="cabeca">
+        <div class="num">05</div>
+        <div>
+          <h2 class="display">O arquivo inteiro, do começo ao fim</h2>
+          <p class="resumo">Tudo o que foi digitado hoje, em ordem, num arquivo só. Três blocos, uma funcionalidade cada — mais as duas linhas de acabamento lá em cima.</p>
+        </div>
+      </div>
+      <div class="dupla">
+        <div>
+          <div class="painel">
+            <div class="painel-topo">
+              <span class="painel-titulo"><span class="ponto"></span> O código</span>
+              <span class="arquivo">script.js — completo</span>
+            </div>
+            <pre class="codigo" data-lang="js"><code>/* ============================================================
    GTA VI — COMPORTAMENTO DA PÁGINA (JavaScript)
    ============================================================ */
 
@@ -656,436 +656,87 @@ if (video.readyState >= 1) {
   animarCapa();
 } else {
   video.addEventListener("loadedmetadata", animarCapa);
-}`}
-    ],
-    chips:["const","function","if / else","addEventListener","classList","querySelectorAll","forEach","gsap"],
-    notas:[
-      {chip:"Leitura", txt:"Lê de cima pra baixo uma vez só, sem tentar entender tudo. O que você quer enxergar é o <b>desenho</b>: acabamento, funcionalidade 1, funcionalidade 2, funcionalidade 3. Cada bloco começa achando um elemento e termina trocando alguma coisa."},
-      {chip:"Se não rodar", txt:"Abre o Console (F12) e lê a <b>primeira</b> mensagem vermelha, não a última. <code>gsap is not defined</code> = ordem dos <code>&lt;script&gt;</code>. <code>Cannot read properties of null</code> = o <code>id</code> ou a <code>class</code> não bate com o HTML."},
-      {chip:"Próximo passo", txt:"Muda os números e vê o que acontece: troca o <code>50</code> por <code>300</code>, o <code>threshold</code> por <code>0.8</code>, o <code>end</code> por <code>\"+=1200\"</code>. Quebrar de propósito e consertar é como se aprende programação de verdade."}
-    ],
-    demo:"arquivos",
-    legenda:"<b>O que mudou em cada arquivo hoje.</b> O <code>index.html</code> e o <code>style.css</code> só receberam alguns retoques — o arquivo novo da aula é um só."
-  }
-];
-
-/* ---------------- coloração do código ---------------- */
-function escapar(t){
-  return t.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
-}
-
-function pintarTag(tag){
-  return tag.replace(/^(&lt;\/?)([a-zA-Z0-9!-]*)([\s\S]*?)(\/?&gt;)$/, function(_,ab,nome,resto,fe){
-    const attrs = resto.replace(/([a-zA-Z-]+)(=)("[^"]*")/g,
-        '<span class="atr">$1</span>=<span class="val">$3</span>')
-      .replace(/(\s)([a-zA-Z-]+)(?=[\s]|$)/g, '$1<span class="atr">$2</span>');
-    return '<span class="tag">'+ab+'</span><span class="nome">'+nome+'</span>'+attrs+'<span class="tag">'+fe+'</span>';
-  });
-}
-
-function pintarHTML(codigo){
-  let t = escapar(codigo);
-  const guarda = [];
-  t = t.replace(/&lt;!--[\s\S]*?--&gt;/g, m => {
-    guarda.push('<span class="com">'+m+'</span>');
-    return "\u0000"+(guarda.length-1)+"\u0000";
-  });
-  t = t.replace(/&lt;\/?[a-zA-Z!][\s\S]*?&gt;/g, m => {
-    guarda.push(pintarTag(m));
-    return "\u0000"+(guarda.length-1)+"\u0000";
-  });
-  return t.replace(/\u0000(\d+)\u0000/g, (_,i) => guarda[+i]);
-}
-
-function pintarJS(codigo){
-  let t = escapar(codigo);
-  const guarda = [];
-  const guardar = h => { guarda.push(h); return "\u0000"+(guarda.length-1)+"\u0001"; };
-
-  t = t.replace(/\/\*[\s\S]*?\*\/|\/\/[^\n]*/g, m => guardar('<span class="com">'+m+'</span>'));
-  t = t.replace(/(["'])(?:\\.|(?!\1)[^\\\n])*\1/g, m => guardar('<span class="val">'+m+'</span>'));
-
-  return t.split(/(\u0000\d+\u0001)/).map(parte=>{
-    if(/^\u0000\d+\u0001$/.test(parte)) return guarda[+parte.slice(1,-1)];
-    return parte
-      .replace(/\b(const|let|var|function|return|if|else|new|true|false|null|undefined|this)\b/g,
-          '<span class="tag">$1</span>')
-      .replace(/\b(\d+\.?\d*)\b/g, '<span class="nome">$1</span>')
-      .replace(/([A-Za-z_$][\w$]*)(?=\s*\()/g, '<span class="atr">$1</span>');
-  }).join("");
-}
-
-function pintarCSS(codigo){
-  let t = escapar(codigo);
-  const guarda = [];
-  const guardar = h => { guarda.push(h); return "\u0000"+(guarda.length-1)+"\u0000"; };
-  t = t.replace(/\/\*[\s\S]*?\*\//g, m => guardar('<span class="com">'+m+'</span>'));
-  t = t.replace(/([^{};\u0000\n][^{};\u0000]*)(\{)/g, (m,sel,ab)=>'<span class="nome">'+sel+'</span>'+ab);
-  t = t.replace(/([-a-zA-Z]+)(\s*:\s*)([^;{}\n]+)(;)/g,
-      '<span class="atr">$1</span>$2<span class="val">$3</span>$4');
-  return t.replace(/\u0000(\d+)\u0000/g, (_,i) => guarda[+i]);
-}
-
-function pintar(codigo, lang){
-  if(lang === "html") return pintarHTML(codigo);
-  if(lang === "css")  return pintarCSS(codigo);
-  return pintarJS(codigo);
-}
-
-function tirarComentarios(codigo, lang){
-  let t = codigo;
-  if(lang === "html"){
-    t = t.replace(/[ \t]*<!--[\s\S]*?-->[ \t]*\n?/g, "");
-  } else {
-    t = t.replace(/[ \t]*\/\*[\s\S]*?\*\/[ \t]*\n?/g, "");
-    t = t.replace(/[ \t]*\/\/[^\n]*\n?/g, "");
-  }
-  return t.replace(/\n{3,}/g, "\n\n").trim();
-}
-
-/* ---------------- a réplica da página real ---------------- */
-function replica(){
-  return `
-    <div class="p-menu"><span>VI</span></div>
-    <div class="p-scroll">
-      <header class="p-capa">
-        <div class="p-capa-conteudo">
-          <img class="p-arte" src="${ARTE}" alt="Grand Theft Auto VI"
-               onerror="this.outerHTML='<div class=&quot;p-arte-fallback&quot;>GTA VI</div>'">
-        </div>
-        <div class="p-barra">
-          <div><b>Lançamento</b><i>19 de Novembro de 2026</i></div>
-          <a class="p-botao">Reserve agora</a>
-          <div><b>Disponível em</b><i>PS5 · Xbox Series X|S</i></div>
-        </div>
-        <img class="p-seta" src="${SETA}" alt="" onerror="this.style.display='none'">
-      </header>
-
-      <section class="p-secao">
-        <div class="p-central">
-          <p class="p-rotulo">História</p>
-          <h4>Vice City, EUA.</h4>
-          <p class="txt">Jason e Lucia sempre souberam que tudo estava contra eles. Mas, depois que um serviço simples dá errado, eles vão do lado mais sombrio ao lugar mais ensolarado dos Estados Unidos, em meio a uma conspiração criminosa se estendendo por toda a Leonida.</p>
-        </div>
-      </section>
-
-      <section class="p-secao">
-        <div class="p-central">
-          <div class="p-card">
-            <p class="p-rotulo">Vídeos</p>
-            <h4>2º Trailer</h4>
-            <p class="txt">A maior e mais imersiva evolução da série Grand Theft Auto até o momento.</p>
-            <a class="p-botao"><img src="${PLAY}" alt="" onerror="this.style.display='none'"> Ver agora</a>
+}</code></pre>
           </div>
-        </div>
-      </section>
 
-      <footer class="p-rodape">
-        <b>GTA VI</b>
-        Corporativo · Privacidade · Jurídico<br>© 2026 Rockstar Games, Inc.
-      </footer>
-    </div>`;
-}
-
-function demoHTML(tipo){
-  if(tipo === "menu") return `
-    <div class="demo">
-      <div class="p-tela modo-menu">
-        ${replica()}
-        <div class="p-hud">window.scrollY = <b class="v">0</b> · <b class="c">sem classe</b></div>
-      </div>
-    </div>`;
-
-  if(tipo === "blocos") return `
-    <div class="demo">
-      <div class="p-tela modo-blocos">
-        ${replica()}
-        <div class="p-hud"><b class="v">0</b> de 2 já apareceram</div>
-      </div>
-    </div>
-    <div class="d-linha">
-      <button class="d-btn" data-acao="reiniciar">reiniciar</button>
-      <span class="d-dica">cada bloco anima uma vez só — é o <code>unobserve</code></span>
-    </div>`;
-
-  if(tipo === "scrub") return `
-    <div class="demo">
-      <div class="p-tela modo-capa" style="height:300px">
-        <div class="p-menu"><span>VI</span></div>
-        <header class="p-capa" style="height:300px">
-          <div class="p-video"><span>vídeo</span></div>
-          <div class="p-capa-conteudo">
-            <img class="p-arte" src="${ARTE}" alt="Grand Theft Auto VI"
-                 onerror="this.outerHTML='<div class=&quot;p-arte-fallback&quot;>GTA VI</div>'">
+          <div class="tags-usadas">
+            <span class="tag-chip"><b>const</b></span>
+            <span class="tag-chip"><b>function</b></span>
+            <span class="tag-chip"><b>if / else</b></span>
+            <span class="tag-chip"><b>addEventListener</b></span>
+            <span class="tag-chip"><b>classList</b></span>
+            <span class="tag-chip"><b>querySelectorAll</b></span>
+            <span class="tag-chip"><b>forEach</b></span>
+            <span class="tag-chip"><b>gsap</b></span>
           </div>
-          <div class="p-barra">
-            <div><b>Lançamento</b><i>19 de Novembro de 2026</i></div>
-            <a class="p-botao">Reserve agora</a>
-            <div><b>Disponível em</b><i>PS5 · Xbox Series X|S</i></div>
-          </div>
-          <img class="p-seta" src="${SETA}" alt="" onerror="this.style.display='none'">
-        </header>
-      </div>
-    </div>
-    <div class="demo-corpo" style="padding:14px 0 0">
-      <input type="range" class="d-slider" min="0" max="100" value="0" step="0.5">
-      <div class="d-numeros">
-        <span>scroll: <b class="p">0</b>%</span>
-        <span>opacidade do vídeo: <b class="ov">0.00</b></span>
-        <span>currentTime: <b class="ct">0.00</b>s de 5.04s</span>
-      </div>
-    </div>`;
 
-  if(tipo === "f5") return `
-    <div class="demo-corpo" style="padding:0">
-      <div class="d-linha" style="margin:0 0 12px">
-        <button class="d-btn" data-f5="sem">F5 sem clearScrollMemory</button>
-        <button class="d-btn on" data-f5="com">F5 com clearScrollMemory</button>
-      </div>
-      <div class="d-f5"></div>
-    </div>`;
-
-  if(tipo === "arquivos") return `
-    <div class="demo-corpo" style="padding:0">
-      <div class="d-arq">
-        <div class="d-arq-item">
-          <h4>index.html <em>retoques</em></h4>
-          <ul>
-            <li><b>3 tags de script</b> no fim do <code>body</code>: gsap, ScrollTrigger e <code>script.js</code>, nessa ordem</li>
-            <li>a classe <b>aparecer</b> em 2 lugares, sempre na <code>div</code> de dentro</li>
-          </ul>
-        </div>
-        <div class="d-arq-item">
-          <h4>style.css <em>retoques</em></h4>
-          <ul>
-            <li><code>.menu</code> ganha <b>transition</b></li>
-            <li><code>.menu-rolado</code> é <b>nova</b></li>
-            <li><code>.capa-video</code> é <b>trocada</b> (adeus <code>display: none</code>)</li>
-            <li><code>.aparecer</code> e <code>.aparecer.visivel</code> são <b>novas</b></li>
-          </ul>
-        </div>
-        <div class="d-arq-item">
-          <h4>script.js <em>arquivo novo</em></h4>
-          <ul>
-            <li>acabamento: a memória de scroll</li>
-            <li>1 · o menu que some</li>
-            <li>2 · os blocos que aparecem</li>
-            <li>3 · o vídeo que anda com o scroll</li>
-          </ul>
-        </div>
-      </div>
-    </div>`;
-
-  return "";
-}
-
-/* ---------------- montagem da página ---------------- */
-const alvo = document.getElementById("secoes");
-const pills = document.getElementById("pills");
-let comentariosLigados = true;
-
-CONTEUDO.forEach((s, i) => {
-  const n = String(i+1).padStart(2,"0");
-
-  const sec = document.createElement("section");
-  sec.className = "secao";
-  sec.id = s.id;
-  sec.innerHTML = `
-    <div class="cabeca">
-      <div class="num">${n}</div>
-      <div>
-        <h2 class="display">${s.titulo}</h2>
-        <p class="resumo">${s.resumo}</p>
-      </div>
-    </div>
-    <div class="dupla">
-      <div>
-        ${s.blocos.map(b=>`
-          <div class="painel">
-            <div class="painel-topo">
-              <span class="painel-titulo"><span class="ponto"></span> O código</span>
-              <span class="arquivo">${b.arq}</span>
+          <div class="notas">
+            <div class="nota">
+              <span class="chip">Leitura</span>
+              <div>Lê de cima pra baixo uma vez só, sem tentar entender tudo. O que você quer enxergar é o <b>desenho</b>: acabamento, funcionalidade 1, funcionalidade 2, funcionalidade 3. Cada bloco começa achando um elemento e termina trocando alguma coisa.</div>
             </div>
-            <pre class="codigo" data-lang="${b.lang}" data-cru="${encodeURIComponent(b.txt)}"></pre>
-          </div>`).join("")}
-        <div class="tags-usadas">
-          ${s.chips.map(t=>`<span class="tag-chip"><b>${t}</b></span>`).join("")}
+            <div class="nota">
+              <span class="chip">Se não rodar</span>
+              <div>Abre o Console (F12) e lê a <b>primeira</b> mensagem vermelha, não a última. <code>gsap is not defined</code> = ordem dos <code>&lt;script&gt;</code>. <code>Cannot read properties of null</code> = o <code>id</code> ou a <code>class</code> não bate com o HTML.</div>
+            </div>
+            <div class="nota">
+              <span class="chip">Próximo passo</span>
+              <div>Muda os números e vê o que acontece: troca o <code>50</code> por <code>300</code>, o <code>threshold</code> por <code>0.8</code>, o <code>end</code> por <code>&quot;+=1200&quot;</code>. Quebrar de propósito e consertar é como se aprende programação de verdade.</div>
+            </div>
+          </div>
         </div>
-        <div class="notas">
-          ${s.notas.map(nt=>`<div class="nota${/Atenção|Cuidado|Armadilha|Alerta/.test(nt.chip)?" alerta":""}">
-              <span class="chip">${nt.chip}</span><div>${nt.txt}</div>
-            </div>`).join("")}
+
+        <div class="quadro">
+          <div class="painel-topo">
+            <span class="painel-titulo"><span class="ponto ciano"></span> Rodando</span>
+            <span class="arquivo">parte 05 de 05</span>
+          </div>
+          <div class="quadro-img" data-demo="arquivos">
+            <div class="demo-corpo d-f5-corpo">
+              <div class="d-arq">
+                <div class="d-arq-item">
+                  <h4>index.html <em>retoques</em></h4>
+                  <ul>
+                    <li><b>3 tags de script</b> no fim do <code>body</code>: gsap, ScrollTrigger e <code>script.js</code>, nessa ordem</li>
+                    <li>a classe <b>aparecer</b> em 2 lugares, sempre na <code>div</code> de dentro</li>
+                  </ul>
+                </div>
+                <div class="d-arq-item">
+                  <h4>style.css <em>retoques</em></h4>
+                  <ul>
+                    <li><code>.menu</code> ganha <b>transition</b></li>
+                    <li><code>.menu-rolado</code> é <b>nova</b></li>
+                    <li><code>.capa-video</code> é <b>trocada</b> (adeus <code>display: none</code>)</li>
+                    <li><code>.aparecer</code> e <code>.aparecer.visivel</code> são <b>novas</b></li>
+                  </ul>
+                </div>
+                <div class="d-arq-item">
+                  <h4>script.js <em>arquivo novo</em></h4>
+                  <ul>
+                    <li>acabamento: a memória de scroll</li>
+                    <li>1 · o menu que some</li>
+                    <li>2 · os blocos que aparecem</li>
+                    <li>3 · o vídeo que anda com o scroll</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+          <p class="legenda"><b>O que mudou em cada arquivo hoje.</b> O <code>index.html</code> e o <code>style.css</code> só receberam alguns retoques — o arquivo novo da aula é um só.</p>
         </div>
       </div>
-      <div class="quadro">
-        <div class="painel-topo">
-          <span class="painel-titulo"><span class="ponto ciano"></span> Rodando</span>
-          <span class="arquivo">parte ${n} de ${String(CONTEUDO.length).padStart(2,"0")}</span>
-        </div>
-        <div class="quadro-img" data-demo="${s.demo}">${demoHTML(s.demo)}</div>
-        <p class="legenda">${s.legenda}</p>
-      </div>
-    </div>`;
-  alvo.appendChild(sec);
+    </section>
 
-  const p = document.createElement("button");
-  p.className = "pill";
-  p.innerHTML = `<b>${n}</b> ${s.curto}`;
-  p.addEventListener("click", ()=> document.getElementById(s.id).scrollIntoView({block:"start"}));
-  pills.appendChild(p);
-});
+  </main>
 
-function renderizarCodigos(){
-  document.querySelectorAll("pre.codigo").forEach(pre=>{
-    const cru = decodeURIComponent(pre.dataset.cru);
-    const lang = pre.dataset.lang;
-    pre.innerHTML = pintar(comentariosLigados ? cru : tirarComentarios(cru, lang), lang);
-  });
-}
-renderizarCodigos();
+  <!-- Seção de Conclusão -->
+  <section class="fim">
+    <h2 class="display">É só isso</h2>
+    <p>Repara que nenhuma linha de hoje desenhou coisa alguma na tela. O JavaScript achou elementos, escutou eventos e trocou nomes de classe — o resto já estava no CSS, esperando esse nome chegar. É sempre a mesma receita: <code>achar</code> → <code>escutar</code> → <code>trocar</code>.</p>
+  </section>
 
-document.getElementById("toggleCom").addEventListener("click", e=>{
-  comentariosLigados = !comentariosLigados;
-  e.target.textContent = "Comentários: " + (comentariosLigados ? "ligados" : "desligados");
-  e.target.classList.toggle("ativo", comentariosLigados);
-  renderizarCodigos();
-});
-
-/* ---------------- ligar as demos ---------------- */
-function iniciarDemos(){
-
-  /* 01 — o menu que some ao rolar */
-  document.querySelectorAll('[data-demo="menu"]').forEach(raiz=>{
-    const area  = raiz.querySelector(".p-scroll");
-    const menu  = raiz.querySelector(".p-menu");
-    const valor = raiz.querySelector(".p-hud .v");
-    const estado= raiz.querySelector(".p-hud .c");
-
-    area.addEventListener("scroll", function(){
-      const y = Math.round(area.scrollTop);
-      valor.textContent = y;
-      if(y > 50){
-        menu.classList.add("menu-rolado");
-        estado.textContent = "menu-rolado";
-        estado.classList.add("rosa");
-      } else {
-        menu.classList.remove("menu-rolado");
-        estado.textContent = "sem classe";
-        estado.classList.remove("rosa");
-      }
-    });
-  });
-
-  /* 02 — os blocos que aparecem */
-  document.querySelectorAll('[data-demo="blocos"]').forEach(raiz=>{
-    const area = raiz.querySelector(".p-scroll");
-    const contador = raiz.querySelector(".p-hud .v");
-    let observador = null;
-
-    function ligar(){
-      if(observador) observador.disconnect();
-      let vistos = 0;
-      contador.textContent = "0";
-      raiz.querySelectorAll(".p-central").forEach(b=>b.classList.remove("visivel"));
-      area.scrollTop = 0;
-
-      observador = new IntersectionObserver(function(entradas){
-        entradas.forEach(function(entrada){
-          if(entrada.isIntersecting){
-            entrada.target.classList.add("visivel");
-            observador.unobserve(entrada.target);
-            vistos++;
-            contador.textContent = vistos;
-          }
-        });
-      }, { root: area, threshold: 0.15 });
-
-      raiz.querySelectorAll(".p-central").forEach(b=>observador.observe(b));
-    }
-    raiz.querySelector('[data-acao="reiniciar"]').addEventListener("click", ligar);
-    ligar();
-  });
-
-  /* 03 — o vídeo com scrub */
-  document.querySelectorAll('[data-demo="scrub"]').forEach(raiz=>{
-    const slider   = raiz.querySelector(".d-slider");
-    const conteudo = raiz.querySelector(".p-capa-conteudo");
-    const barra    = raiz.querySelector(".p-barra");
-    const seta     = raiz.querySelector(".p-seta");
-    const video    = raiz.querySelector(".p-video");
-    const pct = raiz.querySelector(".p");
-    const ov  = raiz.querySelector(".ov");
-    const ct  = raiz.querySelector(".ct");
-
-    function atualizar(){
-      const p = slider.value / 100;
-
-      // o conteúdo da capa some nos primeiros 10% (duration: 0.1)
-      const fora = Math.min(p / 0.10, 1);
-      [conteudo, barra, seta].forEach(el=>{
-        if(!el) return;
-        el.style.opacity = (1 - fora).toFixed(2);
-        el.style.transform = (el === seta ? "translateX(-50%) " : "") +
-          "scale(" + (1 - 0.4*fora).toFixed(3) + ")";
-      });
-
-      // o vídeo aparece ao longo dos primeiros 80% (duration: 0.8)
-      const op = Math.min(p / 0.80, 1);
-      video.style.opacity = op.toFixed(2);
-
-      // currentTime anda do começo ao fim, na mesma velocidade do scroll
-      pct.textContent = Math.round(slider.value);
-      ov.textContent = op.toFixed(2);
-      ct.textContent = (p * DURACAO).toFixed(2);
-    }
-
-    slider.addEventListener("input", atualizar);
-    atualizar();
-  });
-
-  /* 04 — o F5 no meio da cena */
-  document.querySelectorAll('[data-demo="f5"]').forEach(raiz=>{
-    const tela = raiz.querySelector(".d-f5");
-    const telas = {
-      com:'<div class="d-f5-tela bom"><div><span class="titulo">Capa inteira, do topo</span>' +
-          'A página recomeçou em <code>scrollY = 0</code>. O <code>pin</code> calcula as posições certas e a cena roda inteira.</div></div>',
-      sem:'<div class="d-f5-tela ruim"><div><span class="titulo">Cena quebrada</span>' +
-          'A página voltou em <code>scrollY = 1840</code>, no meio do pin. A capa aparece sobreposta ao texto e o vídeo trava num frame do meio.</div></div>'
-    };
-    function mostrar(qual){
-      tela.innerHTML = telas[qual];
-      raiz.querySelectorAll("[data-f5]").forEach(b=>b.classList.toggle("on", b.dataset.f5===qual));
-    }
-    raiz.querySelectorAll("[data-f5]").forEach(b=>b.addEventListener("click", ()=>mostrar(b.dataset.f5)));
-    mostrar("com");
-  });
-}
-iniciarDemos();
-
-/* pill ativa conforme rola */
-const secoes = [...document.querySelectorAll(".secao")];
-const botoes = [...pills.children];
-const obs = new IntersectionObserver(entradas=>{
-  entradas.forEach(en=>{
-    if(en.isIntersecting){
-      const i = secoes.indexOf(en.target);
-      botoes.forEach((b,j)=>b.classList.toggle("ativo", j===i));
-    }
-  });
-},{rootMargin:"-20% 0px -70% 0px"});
-secoes.forEach(s=>obs.observe(s));
-
-/* setas do teclado navegam entre as partes */
-document.addEventListener("keydown", e=>{
-  if(e.target.tagName === "INPUT") return;
-  if(e.target.tagName === "BUTTON" && (e.key==="ArrowLeft"||e.key==="ArrowRight")) e.target.blur();
-  if(e.key!=="ArrowRight" && e.key!=="ArrowLeft") return;
-  const atual = botoes.findIndex(b=>b.classList.contains("ativo"));
-  let prox = atual + (e.key==="ArrowRight" ? 1 : -1);
-  if(atual === -1) prox = 0;
-  prox = Math.max(0, Math.min(secoes.length-1, prox));
-  secoes[prox].scrollIntoView({block:"start"});
-});
-</script>
+  <!-- Módulo JavaScript principal de inicialização -->
+  <script type="module" src="../src/js/tutorial2/index.js"></script>
 </body>
+
 </html>
