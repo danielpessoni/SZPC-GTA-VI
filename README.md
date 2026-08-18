@@ -4,6 +4,10 @@ Plataforma integrada e interativa desenvolvida com foco no universo de **Grand T
 
 ---
 
+**Disclaimer:** A landing page desenvolvida durante a Semana do Zero ao Programador Contratado, assim como os Tutoriais 1 e 2, tiveram origem nos materiais e conteúdos apresentados pelos mentores da escola Dev em Dobro. Durante o evento, meu papel na landing page foi acompanhar e reproduzir a implementação junto aos mentores. Posteriormente, utilizei esse material como base de estudo e realizei refatorações e reorganizações no código, incluindo o uso de IA como ferramenta de apoio. O HUB Central (index.html), sua organização e sua integração são criações autorais minhas. A escola Dev em Dobro não tem qualquer relação, parceria ou vínculo com este repositório ou comigo.
+
+---
+
 ## 🕹️ Vertentes e Funcionalidades
 
 O projeto é estruturado em vertentes complementares, cada uma com propósitos didáticos e visuais específicos:
