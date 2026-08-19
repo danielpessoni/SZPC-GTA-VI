@@ -5,8 +5,8 @@
 }
 
 body {
-  background: var(--cor-fundo-primaria);
-  color: var(--cor-fonte-primaria);
-  font-family: var(--fonte-interface);
+  background: #0b0713;
+  color: #f4effb;
+  font-family: "Inter", "Segoe UI", system-ui, -apple-system, sans-serif;
   -webkit-font-smoothing: antialiased;
 }

@@ -1,15 +1,31 @@
+:root {
+  /* Cores */
+  --cor-borda: #2e2145;
+  --cor-fundo-painel: #150e24;
+  --cor-destaque: #ff3d8b;
+  --cor-texto-claro: #f7e8c9;
+
+  /* Espaçamentos e Dimensões */
+  --espessura-borda: 0.0625rem;
+  --raio-borda: 0.75rem;
+  --espacamento-lg: 1.5rem;
+  --espacamento-base: 1.25rem;
+  --espacamento-md: 1.125rem;
+  --espacamento-sm: 0.875rem;
+}
+
 /* ========================================
    SEÇÕES
 ======================================== */
 
 .secao {
-  max-width: var(--largura-maxima-conteudo);
+  max-width: 97.5rem;
   margin: 0 auto;
-  padding: var(--espacamento-secao-vertical) var(--espacamento-secao-horizontal);
+  padding: 2.75rem var(--espacamento-lg);
 }
 
 .secao + .secao {
-  border-top: var(--espessura-borda) solid var(--cor-borda-primaria);
+  border-top: var(--espessura-borda) solid var(--cor-borda);
 }
 
 
@@ -20,26 +36,26 @@
 .titulo {
   display: flex;
   align-items: baseline;
-  gap: var(--espacamento-titulo);
-  margin: 0 0 var(--margem-titulo-inferior);
+  gap: var(--raio-borda);
+  margin: 0 0 var(--espacamento-md);
 
-  font-family: var(--fonte-titulo);
-  font-weight: var(--peso-fonte-titulo);
+  font-family: "Anton", "Impact", "Franklin Gothic Bold", "Arial Narrow", sans-serif;
+  font-weight: 400;
   text-transform: uppercase;
-  letter-spacing: var(--letter-spacing-titulo);
+  letter-spacing: 0.02em;
 
   font-size: clamp(
-    var(--tamanho-fonte-titulo-minimo),
+    1.25rem,
     2.6vw,
-    var(--tamanho-fonte-titulo-maximo)
+    1.875rem
   );
 
-  color: var(--cor-destaque-terciaria);
+  color: var(--cor-texto-claro);
 }
 
 .titulo span {
-  font-size: var(--tamanho-fonte-indice);
-  color: var(--cor-destaque-primaria);
+  font-size: var(--espacamento-sm);
+  color: var(--cor-destaque);
   font-variant-numeric: tabular-nums;
 }
 
@@ -51,7 +67,7 @@
 .dupla {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  gap: var(--espacamento-colunas);
+  gap: var(--espacamento-base);
   align-items: start;
 }
 
@@ -62,38 +78,38 @@
 
 pre.codigo {
   margin: 0;
-  padding: var(--padding-codigo-vertical) var(--padding-codigo-horizontal);
+  padding: var(--espacamento-base) var(--espacamento-md);
   overflow-x: auto;
 
-  background: var(--cor-fundo-secundaria);
-  border: var(--espessura-borda) solid var(--cor-borda-primaria);
-  border-radius: var(--raio-borda-grande);
+  background: var(--cor-fundo-painel);
+  border: var(--espessura-borda) solid var(--cor-borda);
+  border-radius: var(--raio-borda);
 
-  font-family: var(--fonte-codigo);
-  font-size: var(--tamanho-fonte-codigo);
-  line-height: var(--altura-linha-codigo);
+  font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  font-size: 0.84375rem;
+  line-height: 1.75;
   tab-size: 2;
-  color: var(--cor-codigo-texto);
+  color: #e6dcf7;
 }
 
 pre.codigo .tag {
-  color: var(--cor-destaque-primaria);
+  color: var(--cor-destaque);
 }
 
 pre.codigo .nome {
-  color: var(--cor-codigo-nome);
+  color: #ff8ab8;
 }
 
 pre.codigo .atr {
-  color: var(--cor-destaque-secundaria);
+  color: #35d6e7;
 }
 
 pre.codigo .val {
-  color: var(--cor-destaque-terciaria);
+  color: var(--cor-texto-claro);
 }
 
 pre.codigo .com {
-  color: var(--cor-codigo-comentario);
+  color: #6f6291;
   font-style: italic;
 }
 
@@ -104,24 +120,24 @@ pre.codigo .com {
 
 .quadro {
   position: sticky;
-  top: var(--posicao-quadro-topo);
+  top: var(--espacamento-lg);
 
-  background: var(--cor-fundo-secundaria);
-  border: var(--espessura-borda) solid var(--cor-borda-primaria);
-  border-radius: var(--raio-borda-grande);
-  padding: var(--padding-quadro);
+  background: var(--cor-fundo-painel);
+  border: var(--espessura-borda) solid var(--cor-borda);
+  border-radius: var(--raio-borda);
+  padding: var(--espacamento-sm);
 }
 
 .quadro img {
   display: block;
   width: 100%;
   height: auto;
-  border-radius: var(--raio-borda-imagem);
+  border-radius: 0.4375rem;
 
   box-shadow:
-    0 var(--sombra-quadro-deslocamento-y)
-    var(--sombra-quadro-desfoque)
-    rgba(0, 0, 0, var(--sombra-quadro-opacidade));
+    0 var(--espacamento-sm)
+    2.5rem
+    rgba(0, 0, 0, 0.55);
 }
 
 

@@ -1,38 +1,44 @@
-    /* ========================================
-    SCROLLBAR
+:root {
+    --cor-scroll-thumb: #582965;
+    --cor-scroll-track: #150e24;
+    --tamanho-scrollbar: 4px;
+}
+
+/* ========================================
+   SCROLLBAR
 ======================================== */
 
-    html,
-    body,
-    .p-scroll,
-    .p-tela,
-    * {
-        scrollbar-width: thin;
-        scrollbar-color: var(--cor-scroll) var(--cor-fundo-secundaria);
-    }
+html,
+body,
+.p-scroll,
+.p-tela,
+* {
+    scrollbar-width: thin;
+    scrollbar-color: var(--cor-scroll-thumb) var(--cor-scroll-track);
+}
 
-    html::-webkit-scrollbar,
-    body::-webkit-scrollbar,
-    .p-scroll::-webkit-scrollbar,
-    .p-tela::-webkit-scrollbar,
-    *::-webkit-scrollbar {
-        width: 4px;
-        height: 4px;
-    }
+html::-webkit-scrollbar,
+body::-webkit-scrollbar,
+.p-scroll::-webkit-scrollbar,
+.p-tela::-webkit-scrollbar,
+*::-webkit-scrollbar {
+    width: var(--tamanho-scrollbar);
+    height: var(--tamanho-scrollbar);
+}
 
-    html::-webkit-scrollbar-track,
-    body::-webkit-scrollbar-track,
-    .p-scroll::-webkit-scrollbar-track,
-    .p-tela::-webkit-scrollbar-track,
-    *::-webkit-scrollbar-track {
-        background: var(--cor-fundo-secundaria);
-    }
+html::-webkit-scrollbar-track,
+body::-webkit-scrollbar-track,
+.p-scroll::-webkit-scrollbar-track,
+.p-tela::-webkit-scrollbar-track,
+*::-webkit-scrollbar-track {
+    background: var(--cor-scroll-track);
+}
 
-    html::-webkit-scrollbar-thumb,
-    body::-webkit-scrollbar-thumb,
-    .p-scroll::-webkit-scrollbar-thumb,
-    .p-tela::-webkit-scrollbar-thumb,
-    *::-webkit-scrollbar-thumb {
-        background-color: var(--cor-scroll);
-        border-radius: 10px;
-    }
+html::-webkit-scrollbar-thumb,
+body::-webkit-scrollbar-thumb,
+.p-scroll::-webkit-scrollbar-thumb,
+.p-tela::-webkit-scrollbar-thumb,
+*::-webkit-scrollbar-thumb {
+    background-color: var(--cor-scroll-thumb);
+    border-radius: 10px;
+}
