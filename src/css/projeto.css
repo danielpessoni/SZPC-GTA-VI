@@ -1,16 +1,96 @@
+/* ============================================================
+   GTA VI / VICE CITY — ESTILOS
+   ============================================================ */
+
+/* Variáveis (design tokens) */
+:root {
+    --bg-night: #0d0d1a;
+    --bg-dark: #14142a;
+
+    --text-primary: #ffffff;
+    --text-secondary: #c4c0d8;
+    --text-muted: #6e6e85;
+
+    --neon-pink: #ff3d8b;
+    --neon-coral: #ff6a6a;
+
+    --font-display-cond: "Oswald", sans-serif;
+    --font-ui: "Questrial", sans-serif;
+    --font-serif-btn: "Times New Roman", Times, serif;
+
+    --container-max: 1200px;
+    --gutter: clamp(1rem, 5vw, 4rem);
+}
+
+/* Reset */
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
+html {
+    scroll-behavior: smooth;
+    font-size: 16px;
+}
+
 body {
-    background-color: var(--cor-fundo-projeto);
-    color: var(--cor-fonte-projeto);
-    font-family: var(--fonte-interface-projeto);
+    background-color: var(--bg-night);
+    color: var(--text-primary);
+    font-family: var(--font-ui);
     line-height: 1.6;
     overflow-x: hidden;
 }
+
+.conteudo-central {
+    max-width: var(--container-max);
+    margin: 0 auto;
+    padding: 0 var(--gutter);
+}
+
+/* Textinho pequeno e maiúsculo que fica acima dos títulos */
+.rotulo {
+    font-family: var(--font-display-cond);
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--neon-pink);
+    margin-bottom: 0.75rem;
+    display: block;
+}
+
+.botao {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    font-size: 1rem;
+    padding: 0.9rem 2.2rem;
+    border-radius: 50px;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    cursor: pointer;
+    border: 1px solid transparent;
+}
+
+.botao-primario {
+    font-family: var(--font-serif-btn);
+    background-color: var(--neon-pink);
+    color: var(--text-primary);
+    font-weight: bold;
+}
+
+.botao-primario:hover {
+    filter: brightness(1.1);
+    box-shadow: 0 0 28px rgba(255, 61, 139, 0.65);
+    transform: translateY(-2px);
+}
+
+.botao-primario:active {
+    transform: translateY(0);
+}
+
+/* */
 
 .menu {
     position: fixed;
@@ -21,23 +101,42 @@ body {
     transition: transform 0.3s ease;
 }
 
+.menu-rolado {
+    transform: translateY(-100%);
+}
+
 .menu-conteudo {
-    max-width: 1200px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: var(--container-max);
     margin: 0 auto;
-    padding: 8px 32px;
+    padding: 0.5rem var(--gutter);
 }
 
 .menu-logo {
-    font-family: var(--fonte-titulo-projeto);
-    font-size: 29px;
+    font-family: var(--font-display-cond);
+    font-size: 1.8rem;
     font-weight: 700;
     text-decoration: none;
-    color: var(--cor-fonte-projeto);
-    text-shadow: var(--sombra-logo-projeto);
+    color: var(--text-primary);
+    text-shadow: 0 0 0.625rem rgba(255, 61, 139, 0.4);
+    transition: opacity 0.3s;
 }
 
-.menu-rolado{
-    transform: translateY(-100%);
+.menu-logo:hover {
+    opacity: 0.8;
+}
+
+.capa {
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+    padding-top: 40px;
 }
 
 .capa-video {
@@ -50,70 +149,45 @@ body {
     z-index: 1;
     opacity: 0;
     pointer-events: none;
-}
-
-.capa {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-    overflow: hidden;
-    padding-top: 40px;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    contain: strict;
+    will-change: transform;
 }
 
 .capa-conteudo {
     width: 100%;
     display: flex;
     flex-direction: column;
+    justify-content: center;
     align-items: center;
-    padding: var(--padding-capa-conteudo-projeto);
+    padding: 1rem 0 0.5rem;
     position: relative;
     z-index: 2;
 }
 
 .capa-moldura {
-    max-width: var(--max-width-capa-moldura-projeto);
+    position: relative;
+    max-width: 900px;
     width: 90%;
-    border-radius: var(--border-radius-capa-projeto);
-
+    border-radius: 12px;
+    box-shadow: 0 5px 50px rgba(255, 61, 139, 0.65);
+    /* box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8); */
+    overflow: visible;
 }
 
 .capa-imagem {
     width: 100%;
     height: auto;
     display: block;
-    border-radius: var(--border-radius-capa-projeto);
-}
-
-.botao {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    text-decoration: none;
-    background-color: var(--cor-destaque-primaria);
-    font-size: 1rem;
-    padding: var(--padding-botao-projeto);
-    border-radius: var(--border-radius-botao-projeto);
-    transition: all 0.3s ease;
-}
-
-.botao-primario {
-    background-color: var(--cor-destaque-primaria);
-    color: var(--cor-fonte-projeto);
-}
-
-.botao-primario:hover {
-    box-shadow: var(--sombra-botao-projeto);
-    transform: translateY(-2px);
+    border-radius: 12px;
 }
 
 .capa-barra {
     width: 100%;
-    background-color: var(--cor-fundo-barra-projeto);
-    border-top: 1px solid var(--cor-borda-barra-projeto);
-    padding: 20px 0;
+    background-color: rgba(13, 13, 26, 0.85);
+    border-top: 1px solid rgba(255, 255, 255, 0.5);
+    padding: clamp(1rem, 2vw, 1.5rem) 0;
     position: relative;
     z-index: 4;
     display: flex;
@@ -126,44 +200,58 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 32px;
+    align-items: center;
+    gap: clamp(1rem, 3vw, 2rem);
+}
+
+.capa-lancamento,
+.capa-plataformas {
+    flex: 1;
 }
 
 .capa-lancamento {
-    flex: 1;
+    text-align: left;
 }
 
 .capa-plataformas {
-    flex: 1;
     text-align: right;
 }
 
 .capa-rotulo {
-    font-family: var(--fonte-titulo-projeto);
-    font-size: var(--tamanho-fonte-rotulo-projeto);
+    font-family: var(--font-display-cond);
+    font-size: clamp(0.65rem, 2.5vw, 0.85rem);
     font-weight: 700;
+    letter-spacing: 0.10em;
     text-transform: uppercase;
-    color: var(--cor-fonte-terciaria-projeto);
+    color: var(--text-muted);
     margin-bottom: 8px;
 }
 
 .capa-data {
-    font-family: var(--fonte-titulo-projeto);
-    font-size: var(--tamanho-fonte-data-projeto);
+    font-family: var(--font-display-cond);
+    font-size: clamp(1.25rem, 3.5vw, 1.75rem);
     font-weight: 700;
     text-transform: uppercase;
+    line-height: 1.3;
+}
+
+.capa-barra .botao {
+    font-family: var(--font-ui);
+    font-size: clamp(0.85rem, 2.5vw, 0.95rem);
+    padding: clamp(0.65rem, 1.5vw, 0.8rem) clamp(1.6rem, 3vw, 2.2rem);
+    white-space: nowrap;
 }
 
 .lista-plataformas {
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    gap: 8px;
-    color: var(--cor-fonte-secundaria-projeto);
+    gap: clamp(0.25rem, 1vw, 0.5rem);
+    color: var(--text-secondary);
 }
 
 .texto-plataforma {
-    font-size: var(--tamanho-fonte-plataforma-projeto);
+    font-size: clamp(0.8rem, 2.2vw, 0.9rem);
     font-weight: 700;
 }
 
@@ -194,79 +282,106 @@ body {
 }
 
 .conteudo-central {
-    max-width: 1200px;
+    max-width: var(--container-max);
     margin: 0 auto;
-    padding: 0 32px;
+    padding: 0 var(--gutter);
 }
 
 .secao-historia {
-    padding: var(--padding-secao-historia-projeto);
+    padding: 7.5rem 0;
     text-align: center;
 }
 
 .rotulo {
-    font-family: var(--fonte-titulo-projeto);
-    font-size: 14px;
+    font-family: var(--font-display-cond);
+    font-size: 0.85rem;
     font-weight: 700;
     letter-spacing: 3px;
     text-transform: uppercase;
-    color: var(--cor-destaque-primaria);
-    margin-bottom: 12px;
+    color: var(--neon-pink);
+    margin-bottom: 0.75rem;
+    display: block;
 }
 
 .historia-titulo {
-    font-family: var(--fonte-titulo-projeto);
-    font-size: var(--tamanho-fonte-titulo-historia-projeto);
+    font-family: var(--font-display-cond);
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
     font-weight: 700;
-    letter-spacing: 3px;
     text-transform: uppercase;
-    color: var(--cor-destaque-projeto);
-    margin-bottom: var(--margem-titulo-historia-projeto);
+    color: var(--neon-coral);
+    margin-bottom: 2rem;
 }
 
 .historia-texto {
-    max-width: var(--largura-texto-historia-projeto);
+    max-width: 50rem;
     margin: 0 auto;
 }
 
 .historia-texto p {
-    font-size: var(--tamanho-fonte-texto-historia-projeto);
+    font-size: clamp(1.1rem, 2vw, 1.4rem);
     line-height: 1.7;
-    color: var(--cor-fonte-secundaria-projeto);
+    color: var(--text-secondary);
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
 }
 
 .secao-video {
-    padding: var(--padding-secao-video-projeto);
+    padding: 100px 0;
+    position: relative;
+    z-index: 4;
+}
+
+.card-video {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    border-radius: 24px;
+    overflow: hidden;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+    background: url('../assets/assets-projeto/card-trailer.png') center / cover no-repeat;
 }
 
 
-.card-video-container {
-    aspect-ratio: 16 / 9;
-    width: 100%;
-    border-radius: var(--border-radius-card-video-projeto);
-    overflow: hidden;
-    background: linear-gradient(to top, var(--cor-gradiente-card-video-projeto), transparent 70%), url('../assets/assets-projeto/card-trailer.png') center / cover no-repeat;
+.card-video-conteudo {
+    position: absolute;
+    inset: 0;
     display: flex;
     flex-direction: column;
     align-items: flex-end;
     justify-content: flex-end;
     text-align: right;
-    padding: var(--padding-card-video-projeto);
+    padding: clamp(1.5rem, 4vw, 3rem);
+    background: linear-gradient(to top,
+            rgba(13, 13, 26, 0.88) 0%,
+            rgba(13, 13, 26, 0.25) 45%,
+            transparent 70%);
 }
 
 .card-video-titulo {
-    font-family: var(--fonte-titulo-projeto);
-    font-size: var(--tamanho-fonte-titulo-video-projeto);
+    font-family: var(--font-display-cond);
+    font-size: clamp(2rem, 5vw, 3.5rem);
     font-weight: 700;
     text-transform: uppercase;
-    color: var(--cor-destaque-clara-projeto);
-    margin-bottom: var(--margem-card-titulo-video-projeto);
+    color: #f3e4c4;
+    margin-bottom: 0.5rem;
+    line-height: 1;
+    margin-bottom: 0.5rem;
+    letter-spacing: 0.01em;
 }
 
 .card-video-descricao {
-    font-size: var(--tamanho-fonte-descricao-video-projeto);
-    max-width: var(--largura-descricao-video-projeto);
-    margin-bottom: 24px;
+    font-family: var(--font-ui);
+    font-size: clamp(0.95rem, 1.6vw, 1.15rem);
+    color: var(--text-primary);
+    max-width: 26.25rem;
+    line-height: 1.5;
+    margin-bottom: 1.5rem;
+}
+
+.card-video-botao {
+    gap: 0.5rem;
+    padding: 0.75rem 1.6rem;
+    font-family: var(--font-ui);
+    font-weight: 700;
 }
 
 .card-video-botao img {
@@ -275,9 +390,11 @@ body {
 }
 
 .rodape {
-    background-color: var(--cor-fundo-rodape-projeto);
-    border-top: 1px solid var(--cor-borda-rodape-projeto);
+    background-color: var(--bg-dark);
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
     padding: 80px 0 40px;
+    position: relative;
+    z-index: 4;
 }
 
 .rodape-conteudo {
@@ -285,37 +402,38 @@ body {
     flex-direction: column;
     align-items: center;
     text-align: center;
-    gap: 24px;
+    gap: 1.5rem;
 }
 
 .rodape-logo {
-    font-family: var(--fonte-titulo-projeto);
-    font-size: 32px;
+    font-family: var(--font-display-cond);
+    font-size: 2rem;
     font-weight: 700;
-    color: var(--cor-fonte-projeto);
-    text-shadow: var(--sombra-logo-rodape-projeto);
+    color: var(--text-primary);
+    text-shadow: 0 0 0.9375rem rgba(255, 61, 139, 0.3);
 }
 
 .rodape-links {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 8px 24px;
+    gap: 0.5rem 1.5rem;
 }
 
 .rodape-links a {
-    color: var(--cor-fonte-secundaria-projeto);
+    color: var(--text-secondary);
     text-decoration: none;
-    font-size: var(--tamanho-fonte-plataforma-projeto);
+    font-size: 0.875rem;
+    transition: color 0.3s;
 }
 
 .rodape-links a:hover {
-    color: var(--cor-destaque-primaria);
+    color: var(--neon-pink);
 }
 
 .rodape-redes {
     display: flex;
-    gap: 16px;
+    gap: 1rem;
 }
 
 .rede-social {
@@ -325,28 +443,32 @@ body {
     align-items: center;
     justify-content: center;
     text-decoration: none;
-    color: var(--cor-fonte-secundaria-projeto);
+    color: var(--text-secondary);
     font-weight: 700;
-    font-size: var(--tamanho-fonte-plataforma-projeto);
+    font-size: 0.875rem;
     border-radius: 50%;
-    background-color: var(--cor-fundo-rede-social-projeto);
+    background-color: rgba(255, 255, 255, 0.05);
     transition: all 0.3s;
 }
 
 .rede-social:hover {
-    color: var(--cor-fonte-projeto);
-    background-color: var(--cor-destaque-primaria);
+    background-color: var(--neon-pink);
+    color: var(--text-primary);
+    box-shadow: 0 5px 15px rgba(255, 61, 139, 0.4);
 }
 
 .rodape-classificacao,
 .rodape-direitos {
-    color: var(--cor-fonte-terciaria-projeto);
-    font-size: var(--tamanho-fonte-descricao-rodape-projeto);
+    color: var(--text-muted);
+    font-size: 0.8125rem;
     max-width: 640px;
+    line-height: 1.5;
 }
 
 .rodape-classificacao a {
-    color: var(--cor-fonte-secundaria-projeto);
+    color: var(--text-secondary);
+    text-decoration: underline;
+    transition: color 0.3s;
 }
 
 .aparecer {
@@ -362,14 +484,17 @@ body {
 
 
 
-@media(max-width: 700px) {
+@media (max-width: 900px) {
     .capa-barra-conteudo {
         flex-direction: column;
-        align-items: center;
-        gap: 16px;
+        text-align: center;
+        gap: clamp(1rem, 3vw, 1.5rem);
     }
 
-    .capa-lancamento,
+    .capa-lancamento {
+        text-align: center;
+    }
+
     .capa-plataformas {
         text-align: center;
     }
@@ -377,9 +502,39 @@ body {
     .lista-plataformas {
         justify-content: center;
     }
+}
 
-    .card-video-container {
-        aspect-ratio: 4/5;
+/* Notebooks e telas de altura reduzida (desktop): encaixa TODA a capa na altura
+   visível da tela, sem scroll interno e sem cortar conteúdo.
+   O poster é 16:9 (3344x1888 → largura/altura = 1.7712). Em vez de limitar a
+   ALTURA da imagem (o que deixaria a sombra/borda da moldura mais largas que a
+   imagem), encolhemos a LARGURA proporcionalmente à altura disponível — assim
+   imagem, sombra e a barra de baixo diminuem juntas e continuam alinhadas.
+   Orçamento vertical fixo (~255px): padding-top da capa (40) + padding do
+   .capa-conteudo (24) + barra de baixo (~111) + folga para a seta (~80).
+   Em telas altas (>~763px de altura) o teto de 900px vence e NADA muda —
+   as resoluções que já estão ok ficam intactas. */
+@media (min-width: 901px) {
+
+    .capa-moldura,
+    .capa-barra-conteudo {
+        max-width: min(900px, calc((100svh - 255px) * 1.7712));
+    }
+}
+
+@media (max-width: 700px) {
+
+    /* Card mais alto (retrato) no mobile + foca mais à esquerda da imagem
+     (background-position) para não cortar o rosto da personagem da esquerda. */
+    .card-video {
+        aspect-ratio: 4 / 5;
         background-position: 30% center;
+    }
+
+    .card-video-conteudo {
+        background: linear-gradient(to top,
+                rgba(13, 13, 26, 0.9) 0%,
+                rgba(13, 13, 26, 0.35) 55%,
+                transparent 80%);
     }
 }
