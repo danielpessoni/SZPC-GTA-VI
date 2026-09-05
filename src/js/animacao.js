@@ -41,35 +41,94 @@ gsap.registerPlugin(ScrollTrigger);
 const video = document.querySelector(".capa-video");
 
 function animarCapa() {
-    const linhaDoTempo = gsap.timeline({
-        scrollTrigger: {
-            trigger: ".capa",
-            start: "top top",
-            end: "+=2500",
-            scrub: 1,
-            pin: true
-        }
+    const media = gsap.matchMedia();
+
+    function animarElementos(linhaDoTempo, escala) {
+        linhaDoTempo.to(".capa-conteudo, .capa-barra, .capa-seta", {
+            opacity: 0,
+            scale: escala,
+            duration: 0.1
+        }, 0);
+
+        linhaDoTempo.to(video, {
+            opacity: 1,
+            duration: 0.8
+        }, 0);
+    }
+
+    media.add("(min-width: 769px)", () => {
+        const linhaDoTempo = gsap.timeline({
+            scrollTrigger: {
+                trigger: ".capa",
+                start: "top top",
+                end: "+=2500",
+                scrub: 1,
+                pin: true
+            }
+        });
+
+        animarElementos(linhaDoTempo, 0.6);
+
+        linhaDoTempo.to(video, {
+            currentTime: video.duration,
+            duration: 1,
+            ease: "none"
+        }, 0);
     });
 
-    // Desaparece com os textos e botões da capa
-    linhaDoTempo.to(".capa-conteudo, .capa-barra, .capa-seta", {
-        opacity: 0,
-        scale: 0.6,
-        duration: 0.1
-    }, 0);
+    media.add("(max-width: 768px)", () => {
+        let tempoDesejado = 0;
+        let atualizacaoAgendada = false;
+        let listenerSeeked;
 
-    // Revela o vídeo aumentando a opacidade
-    linhaDoTempo.to(video, {
-        opacity: 1,
-        duration: 0.8
-    }, 0);
+        function aplicarTempo() {
+            atualizacaoAgendada = false;
 
-    // Avança o tempo do vídeo (currentTime) conforme o scroll
-    linhaDoTempo.to(video, {
-        currentTime: video.duration,
-        duration: 1,
-        ease: "none"
-    }, 0);
+            if (video.readyState < 2 || video.seeking) {
+                return;
+            }
+
+            if (Math.abs(video.currentTime - tempoDesejado) > 0.04) {
+                video.currentTime = tempoDesejado;
+            }
+        }
+
+        function solicitarTempo(tempo) {
+            tempoDesejado = tempo;
+
+            if (!atualizacaoAgendada) {
+                atualizacaoAgendada = true;
+                requestAnimationFrame(aplicarTempo);
+            }
+        }
+
+        listenerSeeked = () => {
+            if (Math.abs(video.currentTime - tempoDesejado) > 0.04) {
+                solicitarTempo(tempoDesejado);
+            }
+        };
+
+        video.addEventListener("seeked", listenerSeeked);
+
+        const linhaDoTempo = gsap.timeline({
+            scrollTrigger: {
+                trigger: ".capa",
+                start: "top top",
+                end: "+=1600",
+                scrub: 0.2,
+                pin: true,
+                onUpdate: (self) => {
+                    solicitarTempo(video.duration * self.progress);
+                }
+            }
+        });
+
+        animarElementos(linhaDoTempo, 0.8);
+
+        return () => {
+            video.removeEventListener("seeked", listenerSeeked);
+        };
+    });
 }
 
 // Verifica se os metadados do vídeo já carregaram para obter a duration correta
